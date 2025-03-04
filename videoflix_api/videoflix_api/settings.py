@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'authentication_app',
-    'video_app',
-    'profile_app'
+    'profile_app',
+    'video_app.apps.VideoAppConfig'
 ]
 
 MIDDLEWARE = [
