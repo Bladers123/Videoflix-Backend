@@ -163,3 +163,7 @@ RQ_QUEUES = {
 RQ_WORKER_CLASS = 'rq_win.worker.WindowsWorker'
 
 AUTH_USER_MODEL = 'authentication_app.CustomUser'
+
+FTP_SERVER = ''
+FTP_USER = ''
+FTP_PASSWORD = ''
