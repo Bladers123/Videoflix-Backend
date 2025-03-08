@@ -1,2 +1,0 @@
-id,password,last_login,is_superuser,groups,user_permissions,username,first_name,last_name,email,is_staff,is_active,date_joined,custom,address,phone
-1,pbkdf2_sha256$870000$Uwu9EiUOskpqRE0FqHYC6p$WaxaGhndV7mo0ElhN34yLdpXpRJ8npbG4vnWy5PzlTY=,2025-03-08 19:05:55,1,,,admin,,,admin@admin.de,1,1,2025-03-08 19:05:44,,,
