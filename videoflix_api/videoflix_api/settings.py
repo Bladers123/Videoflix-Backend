@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication_app',
     'profile_app',
-    'video_app.apps.VideoAppConfig'
+    'video_app.apps.VideoAppConfig',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,26 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1', 
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        "KEY_PREFIX": "videoflix"
+    }
+}
+
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,        
+    }
+}
+
+RQ_WORKER_CLASS = 'rq_win.worker.WindowsWorker'

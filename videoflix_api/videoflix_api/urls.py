@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('django-rq/', include('django_rq.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/auth/', include('authentication_app.api.urls')),
     path('api/video/', include('video_app.api.urls')),
