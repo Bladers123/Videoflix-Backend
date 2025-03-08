@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -45,6 +47,8 @@ INSTALLED_APPS = [
     'profile_app',
     'video_app.apps.VideoAppConfig',
     'django_rq',
+    'import_export',
+    'import_export_app',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +79,7 @@ TEMPLATES = [
     },
 ]
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -156,3 +161,5 @@ RQ_QUEUES = {
 }
 
 RQ_WORKER_CLASS = 'rq_win.worker.WindowsWorker'
+
+AUTH_USER_MODEL = 'authentication_app.CustomUser'

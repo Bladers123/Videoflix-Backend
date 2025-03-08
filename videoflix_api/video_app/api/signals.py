@@ -11,7 +11,7 @@ def video_post_save(sender, instance, created, **kwargs):
     if created:
         print('Neues Video wurde erstellt.')
         queue = django_rq.get_queue('default', autocommit=True)
-        queue.enqueue(convert_to_480p, instance.video_file.path)
+        queue.enqueue(convert_to_480p, instance.video_file.path)    # rq worker server muss gestartet sein
         
 
 
