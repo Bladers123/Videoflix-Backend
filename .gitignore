@@ -141,3 +141,4 @@ GitHub.sublime-settings
 
 # import export
 static
+import_export_app/export_data/
