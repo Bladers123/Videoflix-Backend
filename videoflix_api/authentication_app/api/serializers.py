@@ -20,13 +20,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'password', 'repeated_password')
+        fields = ('id', 'username', 'email', 'password', 'repeated_password', 'phone', 'address', 'first_name', 'last_name', )
 
     def validate(self, data):
         password = data.get('password')
         repeated_password = data.get('repeated_password')
         email = data.get('email')
         username = data.get('username')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        phone = data.get('phone')
+        address = data.get('address')
+
 
         if password != repeated_password:
             raise serializers.ValidationError({
@@ -48,7 +53,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
                 'username': 'Dieser Nutzername ist bereits registriert.'
             })
 
-        if not all([password, repeated_password, email, username]):
+        if not all([password, repeated_password, email, username, first_name, last_name, phone, address]):
             raise serializers.ValidationError("Ungültige Eingaben. Bitte alle erforderlichen Felder ausfüllen.")
 
         return data
@@ -59,6 +64,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            phone=validated_data['phone'],
+            address=validated_data['address']
         )
         return user
 
