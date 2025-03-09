@@ -20,7 +20,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'password', 'repeated_password', 'type')
+        fields = ('id', 'username', 'email', 'password', 'repeated_password')
 
     def validate(self, data):
         password = data.get('password')
@@ -59,7 +59,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
-            type=validated_data['type']
         )
         return user
 

@@ -59,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'videoflix_api.urls'
@@ -163,6 +165,13 @@ RQ_QUEUES = {
 RQ_WORKER_CLASS = 'rq_win.worker.WindowsWorker'
 
 AUTH_USER_MODEL = 'authentication_app.CustomUser'
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:4200",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 FTP_SERVER = ''
 FTP_USER = ''
