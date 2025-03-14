@@ -14,24 +14,39 @@ class CustomUserSerializer(serializers.ModelSerializer):
             if not field.is_relation or field.one_to_one or field.many_to_one
         ] 
 
-
 class RegistrationSerializer(serializers.ModelSerializer):
-    repeated_password = serializers.CharField(write_only=True)
+    repeated_password = serializers.CharField(
+        write_only=True,
+        error_messages={'blank': 'Bitte das [Passwort wiederholen] Feld ausfüllen.'}
+    )
+    username = serializers.CharField(
+        error_messages={'blank': 'Bitte das [Nutzername] Feld ausfüllen.'}
+    )
+    email = serializers.EmailField(
+        error_messages={'blank': 'Bitte das [Email] Feld ausfüllen.'}
+    )
+    password = serializers.CharField(
+        write_only=True,
+        error_messages={'blank': 'Bitte das [Passwort] Feld ausfüllen.'}
+    )
 
+    phone = serializers.CharField(required=False, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
+    first_name = serializers.CharField(required=False, allow_blank=True)
+    last_name = serializers.CharField(required=False, allow_blank=True)
+    
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'email', 'password', 'repeated_password', 'phone', 'address', 'first_name', 'last_name', )
+        fields = (
+            'id', 'username', 'email', 'password', 'repeated_password',
+            'phone', 'address', 'first_name', 'last_name',
+        )
 
     def validate(self, data):
         password = data.get('password')
         repeated_password = data.get('repeated_password')
         email = data.get('email')
         username = data.get('username')
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
-        phone = data.get('phone')
-        address = data.get('address')
-
 
         if password != repeated_password:
             raise serializers.ValidationError({
@@ -53,10 +68,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
                 'username': 'Dieser Nutzername ist bereits registriert.'
             })
 
-        if not all([password, repeated_password, email, username, first_name, last_name, phone, address]):
-            raise serializers.ValidationError("Ungültige Eingaben. Bitte alle erforderlichen Felder ausfüllen.")
-
         return data
+
+    def create(self, validated_data):
+        validated_data.pop('repeated_password')
+        user = CustomUser.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone=validated_data.get('phone', ''),
+            address=validated_data.get('address', '')
+        )
+        return user
+
+
 
     def create(self, validated_data):
         validated_data.pop('repeated_password')
@@ -70,6 +97,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
             address=validated_data['address']
         )
         return user
+
+
+
+
+
+
+
+
+
 
 
 

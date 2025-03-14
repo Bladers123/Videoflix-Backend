@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import GenericAPIView
 from authentication_app.models import CustomUser
+from rest_framework.throttling import AnonRateThrottle
 
 
 
@@ -18,6 +19,8 @@ class UserViewSet(ReadOnlyModelViewSet):
 class RegistrationViewSet(CreateModelMixin, GenericViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = RegistrationSerializer
+    throttle_classes = [AnonRateThrottle]
+
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -31,7 +34,8 @@ class RegistrationViewSet(CreateModelMixin, GenericViewSet):
                 'token': token.key,
                 'username': user.username,
                 'email': user.email,
-                'user_id': user.id
+                'user_id': user.id,
+                'successfully': True
             },
             status=status.HTTP_201_CREATED
         )
