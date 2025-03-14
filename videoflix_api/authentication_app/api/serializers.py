@@ -85,39 +85,34 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 
 
-    def create(self, validated_data):
-        validated_data.pop('repeated_password')
-        user = CustomUser.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            phone=validated_data['phone'],
-            address=validated_data['address']
-        )
-        return user
-
-
-
-
-
-
-
-
-
-
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField(write_only=True)
+    email = serializers.EmailField(
+        error_messages={
+            'required': 'Bitte das [Email] Feld ausfüllen.',
+            'blank': 'Bitte das [Email] Feld ausfüllen.'
+        }
+    )
+    password = serializers.CharField(
+        write_only=True,
+        error_messages={
+            'required': 'Bitte das [Passwort] Feld ausfüllen.',
+            'blank': 'Bitte das [Passwort] Feld ausfüllen.'
+        }
+    )
 
     def validate(self, attributes):
-        username = attributes.get('username')
+        email = attributes.get('email')
         password = attributes.get('password')
 
-        user = authenticate(username=username, password=password)
+        try:
+            user_instance = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise AuthenticationFailed('Falsche Anmeldeinformationen oder ungültige Eingabe.', status.HTTP_400_BAD_REQUEST)
+
+        user = authenticate(username=user_instance.username, password=password)
+
         if not user:
             raise AuthenticationFailed('Falsche Anmeldeinformationen oder ungültige Eingabe.', status.HTTP_400_BAD_REQUEST)
 

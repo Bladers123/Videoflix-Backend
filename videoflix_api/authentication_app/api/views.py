@@ -56,7 +56,8 @@ class LoginView(GenericAPIView):
                 'token': token.key,
                 'username': user.username,
                 'email': user.email,
-                'user_id': user.id
+                'user_id': user.id,
+                'successfully': True
             },
             status=status.HTTP_200_OK
         )
