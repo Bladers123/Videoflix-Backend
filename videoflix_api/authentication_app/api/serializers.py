@@ -118,3 +118,17 @@ class LoginSerializer(serializers.Serializer):
 
         attributes['user'] = user
         return attributes
+
+
+
+
+
+
+class EmailSerializer(serializers.Serializer):
+    subject = serializers.CharField(max_length=255)
+    message = serializers.CharField()
+    recipient_list = serializers.ListField(
+        child=serializers.EmailField(),
+        help_text="Liste der Empfänger-Adressen"
+    )
+    from_email = serializers.EmailField(required=False, help_text="Optional: Absender-Adresse")
