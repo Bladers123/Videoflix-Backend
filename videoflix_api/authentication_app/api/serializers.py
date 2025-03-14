@@ -3,6 +3,11 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate
 from rest_framework import status
 from authentication_app.models import CustomUser
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.crypto import get_random_string
+
+
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -13,6 +18,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
             for field in CustomUser._meta.get_fields()
             if not field.is_relation or field.one_to_one or field.many_to_one
         ] 
+
+
+
 
 class RegistrationSerializer(serializers.ModelSerializer):
     repeated_password = serializers.CharField(
@@ -122,13 +130,41 @@ class LoginSerializer(serializers.Serializer):
 
 
 
-
-
-class EmailSerializer(serializers.Serializer):
-    subject = serializers.CharField(max_length=255)
-    message = serializers.CharField()
-    recipient_list = serializers.ListField(
-        child=serializers.EmailField(),
-        help_text="Liste der Empfänger-Adressen"
+class PasswordRecoverySerializer(serializers.Serializer):
+    email = serializers.EmailField(
+        error_messages={
+            'required': 'Bitte das [Email] Feld ausfüllen.',
+            'blank': 'Bitte das [Email] Feld ausfüllen.',
+            'invalid': 'Bitte eine gültige E-Mail-Adresse eingeben.'
+        }
     )
-    from_email = serializers.EmailField(required=False, help_text="Optional: Absender-Adresse")
+
+    def validate_email(self, value):
+        if not CustomUser.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError(
+                'Ein Benutzer mit dieser E-Mail-Adresse existiert nicht.'
+            )
+        return value
+
+    def create(self, validated_data):
+        email = validated_data['email']
+        user = CustomUser.objects.get(email__iexact=email)
+
+        random_password = get_random_string(length=8)
+
+        user.set_password(random_password)
+        user.save()
+
+        subject = "Passwort zurücksetzen"
+        message = f"Dein neues Passwort lautet: {random_password}\n" \
+                  "Bitte ändere es nach dem Einloggen."
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
+
+        if not from_email:
+            raise serializers.ValidationError(
+                'DEFAULT_FROM_EMAIL ist nicht in den Settings definiert.'
+            )
+
+        send_mail(subject, message, from_email, [email])
+        
+        return validated_data
