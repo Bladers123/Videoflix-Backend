@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 
 
 
-router.register(r'profile', ProfileViewSet, basename='profile')
+router.register(r'profile-list', ProfileViewSet, basename='profile')
 
 urlpatterns = [
     path('', include(router.urls)),
