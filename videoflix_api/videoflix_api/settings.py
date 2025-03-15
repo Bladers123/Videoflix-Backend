@@ -200,7 +200,7 @@ FTP_USER = env('FTP_USER')
 FTP_PASSWORD = env('FTP_PASSWORD')
 
 
-# Email
+# Email (For Password Recovery)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

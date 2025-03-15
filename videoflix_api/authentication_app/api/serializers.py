@@ -157,7 +157,9 @@ class PasswordRecoverySerializer(serializers.Serializer):
 
         subject = "Passwort zurücksetzen"
         message = f"Dein neues Passwort lautet: {random_password}\n" \
-                  "Bitte ändere es nach dem Einloggen."
+                  "Im Dashboard können Sie das Passwort ändern.\n\n" \
+                  "Mit freundlichen Grüßen" \
+                  "Ihr Videoflix Team"
         from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
 
         if not from_email:
