@@ -194,18 +194,18 @@ AUTH_USER_MODEL = 'authentication_app.CustomUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+# FTP Server
+FTP_SERVER = env('FTP_SERVER')
+FTP_USER = env('FTP_USER')
+FTP_PASSWORD = env('FTP_PASSWORD')
 
-FTP_SERVER = ''
-FTP_USER = ''
-FTP_PASSWORD = ''
 
-
-# Email Umgebungsvariablen
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')     # In .env zu finden
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')    # In .env zu finden
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')  # In .env zu finden
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')    
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')    
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')  
 
