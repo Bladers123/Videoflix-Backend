@@ -8,15 +8,12 @@ from django.contrib.auth.admin import UserAdmin
 class CustomUserAdmin(admin.ModelAdmin):
     add_form = CustomUserCreationForm
     fieldsets = (
-    *UserAdmin.fieldsets,
-    (
-        'Individuelle Daten',
-        {
-            'fields': (
-            'custom',
-            'phone',
-            'address'
-            )
-        }
+        *UserAdmin.fieldsets,
+        (
+            'Individuelle Daten',
+            {
+                'fields': ('custom', 'phone', 'address')
+            }
+        ),
     )
-)
+    list_display = ('username', 'email', 'custom', 'phone', 'address')

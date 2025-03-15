@@ -1,15 +1,14 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from .serializers import CustomUserSerializer, RegistrationSerializer, LoginSerializer, PasswordRecoverySerializer
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import GenericAPIView
 from authentication_app.models import CustomUser
 from rest_framework.throttling import AnonRateThrottle
-from rest_framework import generics
-
+from rest_framework.views import APIView
 
 
 class UserViewSet(ReadOnlyModelViewSet):
@@ -83,5 +82,22 @@ class PasswordRecoveryAPIView(generics.CreateAPIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+
+class UserVerifyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user 
+        if user:
+            return Response(
+                {
+                    'exists': True, 
+                    'username': user.username
+                },
+                status=status.HTTP_200_OK)
+        
+        return Response({'exists': False}, status=status.HTTP_401_UNAUTHORIZED)
 
 
