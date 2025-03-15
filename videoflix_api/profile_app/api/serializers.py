@@ -3,8 +3,15 @@ from profile_app.models import Profile
 
 
 
-
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields =  '__all__'
+        fields = (
+            'user',
+            'username',
+            'first_name',
+            'last_name',
+            'address',
+            'phone',
+            'email'
+        )
