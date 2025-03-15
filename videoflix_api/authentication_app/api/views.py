@@ -32,7 +32,7 @@ class RegistrationViewSet(CreateModelMixin, GenericViewSet):
 
         return Response(
             {
-                'message': 'Erfolgreiche Registrierung',
+                'message': 'Registrierung war erfolgreich.',
                 'token': token.key,
                 'username': user.username,
                 'email': user.email,
@@ -54,7 +54,7 @@ class LoginView(GenericAPIView):
 
         return Response(
             {
-                'message': 'Erfolgreiche Anmeldung',
+                'message': 'Login war erfolgreich.',
                 'token': token.key,
                 'username': user.username,
                 'email': user.email,
@@ -70,3 +70,18 @@ class PasswordRecoveryAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save() 
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        return Response(
+            {
+                'message': 'Senden war erfolgreich.',
+                'successfully': True
+            },
+            status=status.HTTP_200_OK
+        )
+
+
