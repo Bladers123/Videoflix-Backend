@@ -21,7 +21,7 @@ class Profile(models.Model):
 
 
 class SubProfile(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="subprofiles")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="subprofile")
     name = models.CharField(max_length=100)
     img = models.ImageField(upload_to='profile_images', null=True, blank=True)
 
