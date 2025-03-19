@@ -1,6 +1,7 @@
 # profile_app
 from django.db import models
 from authentication_app.models import CustomUser
+from django.core.exceptions import ValidationError
 
 
 
@@ -20,6 +21,7 @@ class Profile(models.Model):
 
 
 
+
 class SubProfile(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="subprofile")
     name = models.CharField(max_length=100)
@@ -27,3 +29,12 @@ class SubProfile(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        if self.profile.subprofile.count() >= 4:
+            raise ValidationError("Es dürfen maximal 4 SubProfiles für dieses Profile existieren.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean() 
+        super().save(*args, **kwargs)
+

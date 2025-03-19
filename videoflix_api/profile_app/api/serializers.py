@@ -8,6 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'user',
+            'subprofile',
             'username',
             'first_name',
             'last_name',
@@ -21,6 +22,7 @@ class SubProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubProfile
         fields = (
+            'id',
             'profile',
             'name',
             'img'
