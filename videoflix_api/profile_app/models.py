@@ -29,11 +29,4 @@ class SubProfile(models.Model):
     def __str__(self):
         return self.name
 
-    def clean(self):
-        if self.profile.subprofile.count() >= 4:
-            raise ValidationError("Es dürfen maximal 4 SubProfiles für dieses Profile existieren.")
-    
-    def save(self, *args, **kwargs):
-        self.full_clean() 
-        super().save(*args, **kwargs)
 
