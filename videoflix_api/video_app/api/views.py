@@ -1,4 +1,4 @@
-# video_app/views.py
+# video_app/api/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse, Http404

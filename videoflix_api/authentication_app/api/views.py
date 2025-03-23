@@ -1,3 +1,4 @@
+# authentication_app/api/views.py
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from .serializers import CustomUserSerializer, RegistrationSerializer, LoginSerializer, PasswordRecoverySerializer
 from rest_framework.permissions import IsAdminUser, IsAuthenticated

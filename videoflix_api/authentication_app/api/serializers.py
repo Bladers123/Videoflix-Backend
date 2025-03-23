@@ -1,3 +1,4 @@
+# authentication_app/api/serilizers.py
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate

@@ -1,3 +1,4 @@
+# authentication_app/api/urls.py
 from django.urls import path
 from rest_framework import routers
 from .views import UserVerifyAPIView, UserViewSet, RegistrationViewSet, LoginView, PasswordRecoveryAPIView

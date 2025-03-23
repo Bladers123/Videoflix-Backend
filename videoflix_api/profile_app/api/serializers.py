@@ -1,3 +1,4 @@
+# profile_app/api/serializers.py
 from rest_framework import serializers
 from profile_app.models import Profile, SubProfile
 

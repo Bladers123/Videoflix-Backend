@@ -1,4 +1,4 @@
-# profile_app
+# profile_app/models.py
 from django.db import models
 from authentication_app.models import CustomUser
 from django.core.exceptions import ValidationError

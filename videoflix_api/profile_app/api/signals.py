@@ -1,3 +1,4 @@
+# profile_app/api/signals.py
 from authentication_app.models import CustomUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
