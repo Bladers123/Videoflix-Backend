@@ -5,6 +5,8 @@ from profile_app.models import Profile, SubProfile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = Profile
         fields = (
@@ -16,8 +18,22 @@ class ProfileSerializer(serializers.ModelSerializer):
             'last_name',
             'address',
             'phone',
-            'email'
+            'email',
+            'password'
         )
+       
+
+    def update(self, instance, validated_data):
+        print("Validated data:", validated_data)
+        password = validated_data.pop('password', None)
+        print("Password:", password)
+        instance = super().update(instance, validated_data)
+        if password:
+            user = instance.user
+            user.set_password(password)
+            user.save()
+        return instance
+
 
 
 class SubProfileSerializer(serializers.ModelSerializer):

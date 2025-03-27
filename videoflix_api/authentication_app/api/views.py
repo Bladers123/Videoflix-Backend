@@ -12,10 +12,27 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
 
-class UserViewSet(ReadOnlyModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-    permission_classes = [IsAdminUser]
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.user.is_superuser:
+            users = CustomUser.objects.all()
+            serializer = CustomUserSerializer(users, many=True)
+            return Response(serializer.data)
+        else:
+            
+            serializer = CustomUserSerializer(request.user)
+            user = serializer.data
+            return Response({
+                'message': 'Laden war erfolgreich.',
+                'token': user['auth_token'],
+                'username': user['username'],
+                'email': user['email'],
+                'id': user['id'],
+                'successfully': True,
+                'profile': user['profile'] 
+            }, status=status.HTTP_200_OK)
 
 
 class RegistrationViewSet(CreateModelMixin, GenericViewSet):

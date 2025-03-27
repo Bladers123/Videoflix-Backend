@@ -6,7 +6,7 @@ from profile_app.models import Profile
 
 
 @receiver(post_save, sender=CustomUser)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
+def create_profile_from_user(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(
             user=instance,
@@ -17,12 +17,14 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
             phone=instance.phone,
             email=instance.email
         )
-    else:
-        profile = instance.profile
-        profile.username = instance.username
-        profile.first_name = instance.first_name
-        profile.last_name = instance.last_name
-        profile.address = instance.address
-        profile.phone = instance.phone
-        profile.email = instance.email
-        profile.save()
+
+@receiver(post_save, sender=Profile)
+def update_user_from_profile(sender, instance, **kwargs):
+    user = instance.user  
+    user.first_name = instance.first_name  
+    user.last_name = instance.last_name    
+    user.email = instance.email            
+    user.address = instance.address       
+    user.phone = instance.phone          
+    user.username = instance.username      
+    user.save()

@@ -20,6 +20,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
             if not field.is_relation or field.one_to_one or field.many_to_one
         ] 
 
+  
+
+
 
 
 
