@@ -7,7 +7,7 @@ from core.ftp_client import FTPClient
 
 
 
-class StreamVideoView(APIView):
+class DownloadVideoView(APIView):
     def get(self, request, video_name):
         remote_path = f'/videos/{video_name}.mp4'
         try:

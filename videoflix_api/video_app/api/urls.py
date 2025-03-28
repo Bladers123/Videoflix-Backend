@@ -1,8 +1,8 @@
 # video_app/api/urls.py
 from django.urls import path
-from .views import StreamVideoView, VideoTestView
+from .views import DownloadVideoView, VideoTestView
 
 urlpatterns = [
     path('', VideoTestView.as_view(), name='video-test'),
-    path('<str:video_name>/', StreamVideoView.as_view(), name='stream_video'),
+    path('<str:video_name>/', DownloadVideoView.as_view(), name='stream_video'),
 ]

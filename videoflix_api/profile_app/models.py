@@ -13,6 +13,7 @@ class Profile(models.Model):
     address = models.CharField(max_length=150, blank=True, default='')
     phone = models.CharField(max_length=25, blank=True, default='')
     email = models.EmailField(blank=True, default='')
+    img = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
