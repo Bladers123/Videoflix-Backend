@@ -19,7 +19,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             'address',
             'phone',
             'email',
-            'password'
+            'password',
+            'img'
         )
 
     def validate(self, data):
@@ -59,9 +60,7 @@ class ProfileSerializer(serializers.ModelSerializer):
        
 
     def update(self, instance, validated_data):
-        print("Validated data:", validated_data)
         password = validated_data.pop('password', None)
-        print("Password:", password)
         instance = super().update(instance, validated_data)
         if password:
             user = instance.user

@@ -8,8 +8,8 @@ from django.core.exceptions import ValidationError
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="profile")
     username = models.CharField(max_length=100, blank=True, default='')
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, default='')
+    last_name = models.CharField(max_length=100, blank=True, default='')
     address = models.CharField(max_length=150, blank=True, default='')
     phone = models.CharField(max_length=25, blank=True, default='')
     email = models.EmailField(blank=True, default='')
