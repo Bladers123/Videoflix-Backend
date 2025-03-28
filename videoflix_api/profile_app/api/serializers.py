@@ -1,4 +1,5 @@
 # profile_app/api/serializers.py
+from ftplib import error_perm
 from rest_framework import serializers
 from profile_app.models import Profile, SubProfile
 
@@ -24,14 +25,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
+        # Deine bisherigen Validierungen...
         password = data.get('password')
-
-        # Falls ein Passwortwert übergeben wird und nicht nur ein leerer String ist, führe die Validierung durch
         if password and password.strip():
             if len(password) < 8:
                 raise serializers.ValidationError({"password": "Passwort muss mindestens 8 Zeichen lang sein"})
 
-        # Weitere Feldvalidierungen:
         email = data.get('email')
         if email and '@' not in email:
             raise serializers.ValidationError({"email": "Ungültige E-Mail-Adresse"})
@@ -57,9 +56,32 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"username": "Ungültiger Benutzername"})
 
         return data
-       
 
     def update(self, instance, validated_data):
+        image_file = validated_data.get('img', None)
+        if image_file:
+            image_file.seek(0)
+            from core.ftp_client import FTPClient
+            ftp_client = FTPClient()
+            ftp_conn = ftp_client.connection
+
+            remote_directory = f"profile_images/{instance.id}"
+            parts = remote_directory.split('/')
+            current_path = ""
+            from ftplib import error_perm
+            for part in parts:
+                if part:
+                    current_path = f"{current_path}/{part}" if current_path else part
+                    try:
+                        ftp_conn.mkd(current_path)
+                    except error_perm as e:
+                        if not str(e).startswith("550"):
+                            raise
+            remote_path = f"/profile_images/{instance.id}/{image_file.name}"
+            ftp_conn.storbinary(f"STOR {remote_path}", image_file)
+            ftp_client.close()
+            validated_data['img'] = remote_path
+
         password = validated_data.pop('password', None)
         instance = super().update(instance, validated_data)
         if password:
@@ -67,6 +89,30 @@ class ProfileSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.save()
         return instance
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        img = representation.get('img')
+        if img:
+            request = self.context.get('request')
+            if img.startswith("http://") or img.startswith("https://"):
+                if "profile_images/" in img:
+                    relative_path = img.split("profile_images/", 1)[1]
+                    relative_path = f"profile_images/{relative_path}"
+                else:
+                    relative_path = img
+            else:
+                relative_path = img
+            ftp_image_url = request.build_absolute_uri(
+                f"/api/profile/ftp-images/{relative_path}"
+            ) if request else f"/api/profile/ftp-images/{relative_path}"
+            representation['img'] = ftp_image_url
+            print(ftp_image_url)
+        return representation
+
+
+
+
 
 
 
