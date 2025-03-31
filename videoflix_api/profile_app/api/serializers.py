@@ -25,7 +25,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        # Deine bisherigen Validierungen...
         password = data.get('password')
         if password and password.strip():
             if len(password) < 8:
