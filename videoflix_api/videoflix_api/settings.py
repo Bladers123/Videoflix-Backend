@@ -68,6 +68,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+# APPEND_SLASH = False
+
 ROOT_URLCONF = 'videoflix_api.urls'
 
 TEMPLATES = [
@@ -156,11 +158,11 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
 ,
     ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '1/second', 
-        'user': '10/second',
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '1/second', 
+    #     'user': '10/second',
 
-    }
+    # }
 }
 
 CACHES = {

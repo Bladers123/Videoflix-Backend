@@ -111,10 +111,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
 class SubProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubProfile

@@ -9,7 +9,8 @@ from core.ftp_client import FTPClient
 
 class DownloadVideoView(APIView):
     def get(self, request, video_name):
-        remote_path = f'/videos/{video_name}.mp4'
+        # Hier gehen wir davon aus, dass das HLS-Manifest mit der Endung .m3u8 vorliegt
+        remote_path = f'/videos/{video_name}'
         try:
             ftp_client = FTPClient()
             buffer = ftp_client.download_file_to_buffer(remote_path)
@@ -17,9 +18,11 @@ class DownloadVideoView(APIView):
         except Exception as e:
             raise Http404(f"Fehler beim Abrufen der Datei: {e}")
         
-        response = StreamingHttpResponse(buffer, content_type='video/mp4')
-        response['Content-Disposition'] = f'attachment; filename="{video_name}.mp4"'
+        # Für m3u8-Dateien wird als MIME-Typ 'application/vnd.apple.mpegurl' genutzt
+        response = StreamingHttpResponse(buffer, content_type='application/vnd.apple.mpegurl')
+        # Wenn der Stream direkt im Browser abgespielt werden soll, ist Content-Disposition in der Regel nicht nötig.
         return response
+
 
 
 
