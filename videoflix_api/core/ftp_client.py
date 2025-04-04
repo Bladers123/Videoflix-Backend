@@ -1,6 +1,7 @@
 # core/ftp_client.py
 import ftplib
 import io
+import os
 from django.conf import settings
 
 class FTPClient:
@@ -33,5 +34,14 @@ class FTPClient:
         if self.connection:
             self.connection.quit()
 
+    def list_video_titles(self):
+        entries = self.connection.nlst('/movies')
+        video_names = [
+            os.path.basename(entry)
+            for entry in entries
+            if os.path.basename(entry) not in ('.', '..')
+        ]
+        return video_names
+    
 
-   
+

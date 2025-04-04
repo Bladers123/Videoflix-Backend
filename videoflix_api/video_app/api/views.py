@@ -11,10 +11,10 @@ class DownloadVideoView(APIView):
     def get(self, request, video_name, file_name=None):
         # Falls kein file_name übergeben wird, liefern wir das Manifest
         if file_name is None:
-            remote_path = f'/videos/{video_name}/{video_name}.m3u8'
+            remote_path = f'/movies/{video_name}/{video_name}.m3u8'
             content_type = 'application/vnd.apple.mpegurl'
         else:
-            remote_path = f'/videos/{video_name}/{file_name}'
+            remote_path = f'/movies/{video_name}/{file_name}'
             # MIME-Typ anhand der Dateiendung festlegen
             if file_name.endswith('.ts'):
                 content_type = 'video/MP2T'
@@ -33,6 +33,17 @@ class DownloadVideoView(APIView):
 
 
 
-class VideoTestView(APIView):
-    def get(self, request, format=None):
-        return Response({'message': 'Test View der Video App'})
+
+
+
+
+class VideoNameView(APIView):
+    def get(self, request):
+        try:
+            ftp_client = FTPClient()
+            video_titles = ftp_client.list_video_titles()
+            print(video_titles)
+            ftp_client.close()
+            return Response({"video_names": video_titles})
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
