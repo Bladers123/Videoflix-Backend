@@ -34,14 +34,22 @@ class FTPClient:
         if self.connection:
             self.connection.quit()
 
+    
     def list_video_titles(self):
-        entries = self.connection.nlst('/movies')
-        video_names = [
+        # Movies abrufen
+        movie_entries = self.connection.nlst('/movies')
+        movie_names = [
             os.path.basename(entry)
-            for entry in entries
+            for entry in movie_entries
             if os.path.basename(entry) not in ('.', '..')
         ]
-        return video_names
-    
-
-
+        
+        # Clips abrufen
+        clip_entries = self.connection.nlst('/clips')
+        clip_names = [
+            os.path.basename(entry)
+            for entry in clip_entries
+            if os.path.basename(entry) not in ('.', '..')
+        ]
+        
+        return {"movies": movie_names, "clips": clip_names}
