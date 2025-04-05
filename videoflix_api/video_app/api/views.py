@@ -7,19 +7,26 @@ from core.ftp_client import FTPClient
 
 
 
+
 class DownloadVideoView(APIView):
-    def get(self, request, video_name, file_name=None):
-        # Falls kein file_name übergeben wird, liefern wir das Manifest
+    def get(self, request, video_type, video_name, file_name=None):
+        if video_type == 'movie':
+            base_path = '/movies'
+        elif video_type == 'clip':
+            base_path = '/clips'
+        else:
+            raise Http404("Unbekannter Video-Typ")
+
         if file_name is None:
-            remote_path = f'/movies/{video_name}/{video_name}.m3u8'
+            remote_path = f'{base_path}/{video_name}/{video_name}.m3u8'
             content_type = 'application/vnd.apple.mpegurl'
         else:
-            remote_path = f'/movies/{video_name}/{file_name}'
-            # MIME-Typ anhand der Dateiendung festlegen
+            remote_path = f'{base_path}/{video_name}/{file_name}'
             if file_name.endswith('.ts'):
                 content_type = 'video/MP2T'
             else:
                 content_type = 'application/octet-stream'
+                
         print(remote_path)
         try:
             ftp_client = FTPClient()
@@ -29,9 +36,6 @@ class DownloadVideoView(APIView):
             raise Http404(f"Fehler beim Abrufen der Datei: {e}")
         
         return StreamingHttpResponse(buffer, content_type=content_type)
-
-
-
 
 
 
