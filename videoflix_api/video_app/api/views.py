@@ -3,13 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse, Http404
 from core.ftp_client import FTPClient
-
+import os
 
 
 
 
 class DownloadVideoView(APIView):
-    def get(self, request, video_type, video_name, file_name=None):
+    def get(self, request, video_type, video_name, file_path=None):
         if video_type == 'movie':
             base_path = '/movies'
         elif video_type == 'clip':
@@ -17,10 +17,13 @@ class DownloadVideoView(APIView):
         else:
             raise Http404("Unbekannter Video-Typ")
 
-        if file_name is None:
-            remote_path = f'{base_path}/{video_name}/{video_name}.m3u8'
+        if file_path is None:
+            # Wenn kein file_path angegeben ist, liefere die Master-Playlist
+            remote_path = f'{base_path}/{video_name}/master.m3u8'
             content_type = 'application/vnd.apple.mpegurl'
         else:
+            # Falls file_path einen Unterpfad enthält, nehme den Basename, um die Datei vom FTP zu holen
+            file_name = os.path.basename(file_path)
             remote_path = f'{base_path}/{video_name}/{file_name}'
             if file_name.endswith('.ts'):
                 content_type = 'video/MP2T'
@@ -36,6 +39,11 @@ class DownloadVideoView(APIView):
             raise Http404(f"Fehler beim Abrufen der Datei: {e}")
         
         return StreamingHttpResponse(buffer, content_type=content_type)
+
+
+
+
+
 
 
 
