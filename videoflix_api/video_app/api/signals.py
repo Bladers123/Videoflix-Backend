@@ -15,22 +15,17 @@ def video_post_save(sender, instance, created, **kwargs):
         print('Neues Video wurde erstellt.')
         queue = django_rq.get_queue('default', autocommit=True)
         
-        # Ermittle Pfad, Dateiname und Basisnamen
         directory, filename = os.path.split(instance.video_file.path)
         name, ext = os.path.splitext(filename)
-        
-        # Starte die Konvertierungsaufgaben für die unterschiedlichen Auflösungen
+        video_type = instance.video_type
+
         queue.enqueue(convert_to_120p, instance.video_file.path)
         queue.enqueue(convert_to_360p, instance.video_file.path)
         queue.enqueue(convert_to_720p, instance.video_file.path)
         queue.enqueue(convert_to_1080p, instance.video_file.path)
-        
-        # Starte den Upload der HLS-Dateien in den Ordner /videos/<name>/
-        queue.enqueue(upload_hls_files, directory, name)
-        
-        # Nachdem die einzelnen Varianten erstellt und hochgeladen wurden, 
-        # generiere und lade die Master-Playlist hoch.
-        queue.enqueue(generate_and_upload_master_playlist, directory, name, name)
+        queue.enqueue(upload_hls_files, directory, name, video_type)
+        queue.enqueue(generate_and_upload_master_playlist, directory, name, name, video_type)
+        print('Videos sind fertig hochgeladen.')
 
 
 
