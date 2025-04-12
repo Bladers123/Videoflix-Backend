@@ -11,44 +11,96 @@
 
 ### - Virtuelle Umgebung erstellen
   Erstelle eine virtuelle Umgebung im Projektverzeichnis:
-  **python -m venv env**
+  ```bash
+  python -m venv env
+  ```
 
 ### - Virtuelle Umgebung aktivieren
    Aktiviere die virtuelle Umgebung:
-  - **.\env\Scripts\activate**  # Für Windows PowerShell
-  - **env\Scripts\activate.bat**  # Für Windows CMD
-  - **source env/bin/activate**  # Für Unix/Linux
+  
+ # Für Windows PowerShell
+   ```bash
+   .\env\Scripts\activate
+   ```
+
+ # Für Windows CMD
+   ```bash
+   env\Scripts\activate.bat
+   ```
+
+# Für Unix/Linux
+   ```bash
+   source env/bin/activate
+   ```
 
 ### - Hinweis: Wenn ein Fehler bezüglich der Ausführungsrichtlinien auftritt, führe folgenden Befehl in PowerShell als Administrator aus:
-  **Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser**
+   ```bash
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   ```
 
 ### - Abhängigkeiten installieren
   Installiere alle benötigten Pakete aus der requirements.txt:
-  **pip install -r requirements.txt**
+  ```bash
+  pip install -r requirements.txt
+  ```
+  
 
 ### - Wenn du die Pakete manuell installieren möchtest, nutze folgende Befehle:
- - **python -m pip install Django**  # Installiert Django
- - **pip install djangorestframework**  # Installiert Django REST Framework
- - **python -m pip install django-cors-headers**  # Installiert django-cors-headers für externen Zugriff
- - # und etlich weitere...
+
+# Installiert Django
+  ```bash
+  python -m pip install Django
+  ```
+
+# Installiert Django REST Framework
+  ```bash
+  pip install djangorestframework
+  ```
+
+ - und etlich weitere...
 
 ### - Navigiere ins Projektverzeichnis:
-  - **cd projektname**
+  ```bash
+  cd projektname
+  ```
 
 ### - Datenbankmigrationen durchführen
   - Erstelle Migrationsdateien basierend auf den Modellen in models.py:
-  **python manage.py makemigrations** 
+  ```bash
+  python manage.py makemigrations
+  ```
+
   - Führe die Migrationen aus, um die Tabellen in der Datenbank zu erstellen:
-  **python manage.py migrate**
+  ```bash
+  python manage.py migrate
+  ```
+
 
 ### - Superuser erstellen
   - Erstelle einen superuser:
-  **python manage.py createsuperuser** 
+    ```bash
+    python manage.py createsuperuser
+    ```
+    
   
 ### - Server starten
   Navigiere in das Projektverzeichnis und starte den Server:
-  **python manage.py runserver**
+  ```bash
+  python manage.py runserver
+  ```
   Der Server wird standardmäßig unter http://127.0.0.1:8000 laufen.
 
 
+
+### - Config (.env)
+  Diese Datei im Projektverzeichnis erstellen (Name der Datei: .env) und die Daten für die Passwortanforderung und den Zugang zum FTP Server eingeben.
+  Hier ein Beispiel:
+
+  EMAIL_HOST_PASSWORD=dsfdsf345435
+  EMAIL_HOST_USER=gmail Adresse
+  DEFAULT_FROM_EMAIL=gmail Adresse
+
+  FTP_SERVER=max-mustermann-server
+  FTP_USER=lkdsjflklkj5654
+  FTP_PASSWORD=fsdkfjjl45645
 
