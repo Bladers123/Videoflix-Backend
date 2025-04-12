@@ -96,11 +96,11 @@
   Diese Datei im Projektverzeichnis erstellen (Name der Datei: .env) und die Daten für die Passwortanforderung und den Zugang zum FTP Server eingeben.
   Hier ein Beispiel:
 
-  EMAIL_HOST_PASSWORD=dsfdsf345435
-  EMAIL_HOST_USER=gmail Adresse
-  DEFAULT_FROM_EMAIL=gmail Adresse
+  - EMAIL_HOST_PASSWORD=dsfdsf345435
+  - EMAIL_HOST_USER=gmail Adresse
+  - DEFAULT_FROM_EMAIL=gmail Adresse
 
-  FTP_SERVER=max-mustermann-server
-  FTP_USER=lkdsjflklkj5654
-  FTP_PASSWORD=fsdkfjjl45645
+  - FTP_SERVER=max-mustermann-server
+  - FTP_USER=lkdsjflklkj5654
+  - FTP_PASSWORD=fsdkfjjl45645
 
