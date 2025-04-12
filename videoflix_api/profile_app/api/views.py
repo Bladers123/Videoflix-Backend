@@ -3,15 +3,12 @@
 import mimetypes
 import os
 from django.http import Http404, HttpResponse
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from profile_app.models import Profile, SubProfile
 from core.ftp_client import FTPClient
 from .permissions import IsOwner
 from .serializers import ProfileSerializer, SubProfileSerializer
 from rest_framework import viewsets
-from rest_framework.views import APIView
-from rest_framework import status
 
 
 class ProfileViewSet(viewsets.ModelViewSet):

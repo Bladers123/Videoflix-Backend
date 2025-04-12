@@ -1,7 +1,7 @@
 # authentication_app/api/views.py
-from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
+from rest_framework.viewsets import GenericViewSet
 from .serializers import CustomUserSerializer, RegistrationSerializer, LoginSerializer, PasswordRecoverySerializer
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
 from rest_framework import status, generics

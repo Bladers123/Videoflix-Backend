@@ -1,7 +1,6 @@
 # profile_app/models.py
 from django.db import models
 from authentication_app.models import CustomUser
-from django.core.exceptions import ValidationError
 
 
 
@@ -17,10 +16,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
-
-
-
 
 
 class SubProfile(models.Model):

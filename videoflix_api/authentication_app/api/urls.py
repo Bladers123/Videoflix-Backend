@@ -3,8 +3,9 @@ from django.urls import path
 from rest_framework import routers
 from .views import UserVerifyAPIView, UserView, RegistrationViewSet, LoginView, PasswordRecoveryAPIView
 
-router = routers.DefaultRouter()
 
+
+router = routers.DefaultRouter()
 
 router.register(r'registration', RegistrationViewSet, basename='user-registration')
 

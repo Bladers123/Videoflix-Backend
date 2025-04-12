@@ -1,1 +1,0 @@
-# video_app/api/serializers.py

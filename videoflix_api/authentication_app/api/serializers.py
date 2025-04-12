@@ -22,10 +22,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
   
 
-
-
-
-
 class RegistrationSerializer(serializers.ModelSerializer):
     repeated_password = serializers.CharField(
         write_only=True,
