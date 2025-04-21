@@ -54,16 +54,7 @@ class DownloadVideoView(APIView):
 
 
 
-class VideoNameView(APIView):
-    throttle_classes = []
-    def get(self, request):
-        try:
-            ftp_client = FTPClient()
-            video_titles = ftp_client.list_video_titles()
-            ftp_client.close()
-            return Response(video_titles)
-        except Exception as e:
-            return Response({"error": str(e)}, status=500)
+
         
 
 

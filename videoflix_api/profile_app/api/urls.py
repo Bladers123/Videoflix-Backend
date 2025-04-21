@@ -12,5 +12,4 @@ router.register(r'sub-profile-list', SubProfileViewSet, basename='sub-profile')
 urlpatterns = [
     path('', include(router.urls)),
     path('ftp-images/<path:image_path>/', serve_ftp_image, name='serve_ftp_image'),
-    # path('favorites/add/', AddFavoriteVideoView.as_view(), name='add-favorite-video'),
 ]
