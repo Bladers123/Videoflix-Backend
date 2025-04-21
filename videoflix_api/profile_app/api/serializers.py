@@ -118,6 +118,7 @@ class SubProfileSerializer(serializers.ModelSerializer):
             'id',
             'profile',
             'name',
+            'favouriteVideos'
         )
 
     name = serializers.CharField(

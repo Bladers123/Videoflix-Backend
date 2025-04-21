@@ -1,11 +1,18 @@
 # video_app/api/urls.py
-from django.urls import path
-from .views import DownloadVideoView, VideoNameView
+from rest_framework import routers
+from django.urls import include, path
+from .views import DownloadVideoView, VideoNameView, VideoViewSet
 
+
+router = routers.DefaultRouter()
+
+router.register(r'video-list', VideoViewSet, basename='sub-profile')
 
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('videoname/', VideoNameView.as_view(), name='videoname'),
     path('<str:video_type>/<str:video_name>/<path:file_path>/', DownloadVideoView.as_view(), name='download-video-file'),
     path('<str:video_type>/<str:video_name>/', DownloadVideoView.as_view(), name='stream_video'),
 ]
+

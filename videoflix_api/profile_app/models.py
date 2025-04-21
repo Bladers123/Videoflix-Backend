@@ -1,6 +1,7 @@
 # profile_app/models.py
 from django.db import models
 from authentication_app.models import CustomUser
+from video_app.models import Video
 
 
 
@@ -21,6 +22,7 @@ class Profile(models.Model):
 class SubProfile(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="subprofile")
     name = models.CharField(max_length=100)
+    favouriteVideos = models.ManyToManyField(Video, related_name='subprofile_favorites', blank=True)
 
     def __str__(self):
         return self.name

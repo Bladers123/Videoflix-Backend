@@ -20,6 +20,7 @@ class Video(models.Model):
         default='movie',
         help_text="Bitte auswählen: movie oder clip"
     )
+    file_size = models.BigIntegerField(null=True, blank=True, help_text="Dateigröße in Bytes")
 
     def __str__(self):
         return self.title

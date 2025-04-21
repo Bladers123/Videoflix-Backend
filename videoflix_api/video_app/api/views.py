@@ -1,10 +1,23 @@
 # video_app/api/views.py
 from rest_framework.views import APIView
+from rest_framework import viewsets
+
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse, Http404
 from core.ftp_client import FTPClient
 import os
+from rest_framework.permissions import IsAuthenticated
 
+from .serializers import VideoSerializer
+from ..models import Video
+
+
+
+class VideoViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+    throttle_classes = [] 
+    
 
 
 
@@ -51,3 +64,6 @@ class VideoNameView(APIView):
             return Response(video_titles)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
+        
+
+

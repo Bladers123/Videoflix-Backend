@@ -27,6 +27,11 @@ def video_post_save(sender, instance, created, **kwargs):
         queue.enqueue(generate_and_upload_master_playlist, directory, name, name, video_type)
         print('Videos sind fertig hochgeladen.')
 
+        if instance.video_file:
+            Video.objects.filter(pk=instance.pk).update(
+                file_size=instance.video_file.size
+            )
+            print(f"Dateigröße ({instance.video_file.size} Bytes) in DB gespeichert.")
 
 
 @receiver(post_delete, sender=Video)

@@ -9,6 +9,7 @@ from core.ftp_client import FTPClient
 from .permissions import IsOwner
 from .serializers import ProfileSerializer, SubProfileSerializer
 from rest_framework import viewsets
+from rest_framework.decorators import action
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -70,3 +71,22 @@ class SubProfileViewSet(viewsets.ModelViewSet):
         return queryset
     
     
+    @action(detail=True, methods=["post"], url_path="add-favorite", permission_classes=[IsAuthenticated, IsOwner])
+    def add_favorite(self, request, pk=None):
+        """
+        Fügt ein Video per POST als Favoriten zum SubProfile hinzu.
+        Erwartet im Body ein JSON mit 'video_id'.
+        """
+        subprofile = self.get_object()
+        video_id = request.data.get("video_id")
+
+        if not video_id:
+            return Response({"error": "video_id wird benötigt."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            video = Video.objects.get(pk=video_id)
+        except Video.DoesNotExist:
+            return Response({"error": "Video nicht gefunden."}, status=status.HTTP_404_NOT_FOUND)
+
+        subprofile.favouriteVideos.add(video)
+        # Optional: Rückgabe des aktualisierten Favoriten-Arrays oder eines Status-Messages.
+        return Response({"status": "Video wurde zu den Favoriten hinzugefügt."}, status=status.HTTP_201_CREATED)
