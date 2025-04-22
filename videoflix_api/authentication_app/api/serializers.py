@@ -89,6 +89,24 @@ class RegistrationSerializer(serializers.ModelSerializer):
             phone=validated_data.get('phone', ''),
             address=validated_data.get('address', '')
         )
+
+        subject = "Willkommen bei Videoflix!"
+        message = (
+            f"Hallo {user.username},\n\n"
+            "Deine Registrierung war erfolgreich.\n\n"
+            "Viel Spaß mit Videoflix!\n\n"
+            "Viele Grüße\n"
+            "Dein Videoflix-Team"
+        )
+
+        from_email = settings.DEFAULT_FROM_EMAIL
+        
+        if not from_email:
+            raise serializers.ValidationError(
+                'DEFAULT_FROM_EMAIL ist nicht in den Settings definiert.'
+            )       
+        send_mail(subject, message, from_email, [user.email])
+
         return user
 
 
