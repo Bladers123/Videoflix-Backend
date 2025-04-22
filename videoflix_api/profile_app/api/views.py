@@ -44,9 +44,6 @@ def serve_ftp_image(request, image_path):
 
 
 
-
-
-
 class SubProfileViewSet(viewsets.ModelViewSet):
     queryset = SubProfile.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
@@ -57,17 +54,14 @@ class SubProfileViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
         
         if self.request.user.is_superuser:
-            # Admins bekommen alle Ergebnisse
             pass
         else:
             queryset = queryset.filter(profile__user=self.request.user)
         
-        # Filter, falls ein Query-Parameter 'profile' vorhanden ist (für andere Endpunkte)
         profile_id = self.request.query_params.get('profile')
         if profile_id is not None:
             queryset = queryset.filter(profile=profile_id)
         
-        # Neuen Filter für den Query-Parameter 'id' hinzufügen
         id_param = self.request.query_params.get('id')
         if id_param is not None:
             queryset = queryset.filter(id=id_param)
@@ -101,7 +95,6 @@ class SubProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # Toggle: wenn schon Favorit, dann entfernen
         if subprofile.favouriteVideos.filter(pk=video_id).exists():
             subprofile.favouriteVideos.remove(video)
             return Response(
@@ -109,7 +102,6 @@ class SubProfileViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_200_OK
             )
 
-        # andernfalls hinzufügen
         subprofile.favouriteVideos.add(video)
         return Response(
             {"video_id": video_id, "favorited": True},
