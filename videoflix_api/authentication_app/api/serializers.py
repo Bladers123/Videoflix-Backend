@@ -147,44 +147,39 @@ class LoginSerializer(serializers.Serializer):
 
 
 
-
 class PasswordRecoverySerializer(serializers.Serializer):
     email = serializers.EmailField(
         error_messages={
             'required': 'Bitte das [Email] Feld ausfüllen.',
-            'blank': 'Bitte das [Email] Feld ausfüllen.',
-            'invalid': 'Bitte eine gültige E-Mail-Adresse eingeben.'
+            'blank':    'Bitte das [Email] Feld ausfüllen.',
+            'invalid':  'Bitte eine gültige E-Mail-Adresse eingeben.'
         }
     )
 
-    def validate_email(self, value):
-        if not CustomUser.objects.filter(email__iexact=value).exists():
-            raise serializers.ValidationError(
-                'Ein Benutzer mit dieser E-Mail-Adresse existiert nicht.'
-            )
-        return value
-
     def create(self, validated_data):
         email = validated_data['email']
-        user = CustomUser.objects.get(email__iexact=email)
+        try:
+            user = CustomUser.objects.get(email__iexact=email)
+        except CustomUser.DoesNotExist:
+            user = None
 
-        random_password = get_random_string(length=8)
+        if user:
+            random_password = get_random_string(length=8)
+            user.set_password(random_password)
+            user.save()
 
-        user.set_password(random_password)
-        user.save()
-
-        subject = "Passwort zurücksetzen"
-        message = f"Dein neues Passwort lautet: {random_password}\n" \
-                  "Im Dashboard können Sie das Passwort ändern.\n\n" \
-                  "Mit freundlichen Grüßen" \
-                  "Ihr Videoflix Team"
-        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
-
-        if not from_email:
-            raise serializers.ValidationError(
-                'DEFAULT_FROM_EMAIL ist nicht in den Settings definiert.'
+            subject = "Passwort zurücksetzen"
+            message = (
+                f"Dein neues Passwort lautet: {random_password}\n"
+                "Im Dashboard kannst du das Passwort ändern.\n\n"
+                "Mit freundlichen Grüßen\n"
+                "Dein Videoflix Team"
             )
+            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None)
+            if not from_email:
+                raise serializers.ValidationError(
+                    'Interner Serverfehler: Absenderadresse nicht konfiguriert.'
+                )
+            send_mail(subject, message, from_email, [email])
 
-        send_mail(subject, message, from_email, [email])
-        
-        return validated_data
+        return {'detail': 'Wenn eine Übereinstimmung gefunden wurde, hast du gleich Post.'}
