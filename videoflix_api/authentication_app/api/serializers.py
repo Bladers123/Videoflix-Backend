@@ -68,7 +68,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if email and CustomUser.objects.filter(email__iexact=email).exists():
             raise serializers.ValidationError({
-                'email': 'Diese E-Mail-Adresse ist bereits registriert.'
+                'email': 'Bitte überprüfe deine Eingaben und versuche es erneut.'
             })
         
         if username and CustomUser.objects.filter(username__iexact=username).exists():
