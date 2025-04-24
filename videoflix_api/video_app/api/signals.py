@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from video_app.models import Video
 from django.db.models.signals import post_save, post_delete
 import django_rq # type: ignore
-from .tasks import  convert_to_1080p, convert_to_120p, convert_to_360p, convert_to_720p, generate_and_upload_master_playlist, upload_hls_files
+from .tasks import  convert_to_1080p, convert_to_120p, convert_to_360p, convert_to_720p, generate_and_upload_master_playlist, upload_hls_files, upload_thumbnail
 
 
 
@@ -26,6 +26,19 @@ def video_post_save(sender, instance, created, **kwargs):
         queue.enqueue(upload_hls_files, directory, name, video_type)
         queue.enqueue(generate_and_upload_master_playlist, directory, name, name, video_type)
         print('Videos sind fertig hochgeladen.')
+
+        if instance.thumbnail:
+            directory, thumb_filename = os.path.split(instance.thumbnail.path)
+            name, ext = os.path.splitext(thumb_filename)
+            video_folder = name 
+            queue.enqueue(
+                upload_thumbnail,
+                instance.thumbnail.path,
+                video_folder,
+                instance.video_type,
+                thumb_filename 
+            )
+            print(f"Thumbnail-Upload für {thumb_filename} enqueued.")
 
         if instance.video_file:
             Video.objects.filter(pk=instance.pk).update(

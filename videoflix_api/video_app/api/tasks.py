@@ -172,3 +172,32 @@ def generate_and_upload_master_playlist(directory, video_folder, base_name, vide
         print(f"Fehler beim Hochladen der Master-Playlist: {e}")
     
     ftp_client.close()
+
+
+def upload_thumbnail(source, video_folder, video_type, remote_filename=None):
+    base_remote_dir = f"/{video_type}s"
+    ftp_client = FTPClient()
+
+    try:
+        try:
+            ftp_client.connection.cwd(base_remote_dir)
+        except ftplib.error_perm:
+            ftp_client.connection.mkd(base_remote_dir)
+            ftp_client.connection.cwd(base_remote_dir)
+
+        try:
+            ftp_client.connection.mkd(video_folder)
+        except ftplib.error_perm:
+            pass 
+        ftp_client.connection.cwd(video_folder)
+
+        if remote_filename is None:
+            remote_filename = os.path.basename(source)
+
+        ftp_client.upload_file(source, remote_filename)
+        print(f"Thumbnail '{source}' erfolgreich hochgeladen als {base_remote_dir}/{video_folder}/{remote_filename}")
+
+    except Exception as e:
+        print(f"Fehler beim Hochladen des Thumbnails: {e}")
+    finally:
+        ftp_client.close()
