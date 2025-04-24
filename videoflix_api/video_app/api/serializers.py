@@ -19,12 +19,11 @@ class VideoSerializer(serializers.ModelSerializer):
         ]
 
     def get_thumbnail(self, obj):
+        if not obj.thumbnail:
+            return None
+
         basename = os.path.splitext(os.path.basename(obj.thumbnail.name))[0]
         filename = os.path.basename(obj.thumbnail.name)
-
         image_path = f"{obj.video_type}s/{basename}/{filename}"
-
         url = reverse('video-ftp-images', kwargs={'image_path': image_path})
-
-        request = self.context.get('request')
-        return request.build_absolute_uri(url)
+        return self.context['request'].build_absolute_uri(url)
