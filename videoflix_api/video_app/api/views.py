@@ -40,7 +40,6 @@ class VideoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     throttle_classes = [] 
-    permission_classes = [IsAuthenticated]
     
     def get_serializer_context(self):
         return {'request': self.request}
