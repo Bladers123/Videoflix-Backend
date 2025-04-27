@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-29tigw5aw=+9zct=jt&cd)zqe2z&yby#2sud(!lrqn#rm7ymq)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '35.198.191.68', 'videoflix-api.tristan-gehring.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '195.201.118.62', 'videoflix-api.tristan-gehring.com']
 
 
 
