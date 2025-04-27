@@ -90,7 +90,7 @@
   ```
   Der Server wird standardmäßig unter http://127.0.0.1:8000 laufen.
 
-### - Bibliothek nur für Windows bzw. in der Entwicklung nutzbar rq-win==0.4.0
+### - Bibliothek nur für Windows bzw. in der Entwicklung nutzbar rq-win==0.4.0 und backports.zoneinfo==0.2.1
 
 ### - Config (.env)
   Diese Datei im Projektverzeichnis erstellen (Name der Datei: .env) und die Daten für die Passwortanforderung und den Zugang zum FTP Server eingeben.
