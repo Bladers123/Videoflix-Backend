@@ -2,22 +2,14 @@
 import mimetypes
 from rest_framework.views import APIView
 from rest_framework import viewsets
-
-from rest_framework.response import Response
 from django.http import HttpResponse, StreamingHttpResponse, Http404
 from core.ftp_client import FTPClient
 import os
 from rest_framework.permissions import IsAuthenticated
-
 from .serializers import VideoSerializer
 from ..models import Video
 
 def serve_ftp_image(request, image_path):
-        """
-        Generisches FTP-Image-Serving, z.B. für
-        /api/video/ftp-images/clips/<folder>/<file>
-        """
-        # führenden Slash sicherstellen
         remote_path = image_path if image_path.startswith("/") else f"/{image_path}"
 
         ftp = FTPClient()
@@ -40,6 +32,7 @@ class VideoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
     throttle_classes = [] 
+    permission_classes = [IsAuthenticated]
     
     def get_serializer_context(self):
         return {'request': self.request}
@@ -49,6 +42,8 @@ class VideoViewSet(viewsets.ReadOnlyModelViewSet):
 
 class DownloadVideoView(APIView):
     throttle_classes = []
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, video_type, video_name, file_path=None):
         if video_type == 'movie':
             base_path = '/movies'

@@ -6,7 +6,7 @@ from .views import DownloadVideoView, VideoViewSet, serve_ftp_image
 
 router = routers.DefaultRouter()
 
-router.register(r'video-list', VideoViewSet, basename='video-list')
+router.register(r'videos', VideoViewSet, basename='video')
 
 
 urlpatterns = [
