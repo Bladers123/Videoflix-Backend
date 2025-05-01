@@ -30,9 +30,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-29tigw5aw=+9zct=jt&cd)zqe2z&yby#2sud(!lrqn#rm7ymq)'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG_TRUE', default=False)
-
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '195.201.118.62', 'videoflix-api.tristan-gehring.com']
 
 
@@ -96,6 +93,8 @@ MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'videoflix_api.wsgi.application'
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
