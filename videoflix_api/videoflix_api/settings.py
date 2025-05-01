@@ -31,7 +31,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
 SECRET_KEY = 'django-insecure-29tigw5aw=+9zct=jt&cd)zqe2z&yby#2sud(!lrqn#rm7ymq)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG_TRUE', default=False)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '195.201.118.62', 'videoflix-api.tristan-gehring.com']
 
@@ -100,25 +100,25 @@ WSGI_APPLICATION = 'videoflix_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
-
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', env('POSTGRES_DB')),
-        'USER': os.getenv('POSTGRES_USER', env('POSTGRES_USER')),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', env('POSTGRES_PASSWORD')),
-        'HOST': env('HOST'), 
-        'PORT': env('PORT'),
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB', env('POSTGRES_DB')),
+#         'USER': os.getenv('POSTGRES_USER', env('POSTGRES_USER')),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', env('POSTGRES_PASSWORD')),
+#         'HOST': env('HOST'), 
+#         'PORT': env('PORT'),
+#     }
+# }
 
 
 
@@ -210,9 +210,6 @@ RQ_WORKER_CLASS = 'rq_win.worker.WindowsWorker'
 
 AUTH_USER_MODEL = 'authentication_app.CustomUser'
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:4200",
-# ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
