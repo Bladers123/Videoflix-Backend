@@ -108,14 +108,15 @@ WSGI_APPLICATION = 'videoflix_api.wsgi.application'
 # }
 
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'meinprojekt_db'),
-        'USER': os.getenv('POSTGRES_USER', 'meinprojekt_user'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'sehr_sicheres_passwort'),
-        'HOST': 'db',  # Service-Name aus docker-compose!
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', env('POSTGRES_DB')),
+        'USER': os.getenv('POSTGRES_USER', env('POSTGRES_USER')),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', env('POSTGRES_PASSWORD')),
+        'HOST': env('HOST'), 
+        'PORT': env('PORT'),
     }
 }
 
