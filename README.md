@@ -53,13 +53,13 @@
 ### - 6. Configure Environment Variables
 Create a .env file in the project root folder:
   ```bash
-  EMAIL_HOST_PASSWORD=dein_app_passwort
-  EMAIL_HOST_USER=deine_email@gmail.com
-  DEFAULT_FROM_EMAIL=deine_email@gmail.com
+  EMAIL_HOST_PASSWORD=your_app_password
+  EMAIL_HOST_USER=your_email@gmail.com
+  DEFAULT_FROM_EMAIL=your_email@gmail.com
   
-  FTP_SERVER=ftp.meinserver.com
-  FTP_USER=ftp_nutzer
-  FTP_PASSWORD=sicheres_passwort
+  FTP_SERVER=ftp.example.com
+  FTP_USER=ftp_user
+  FTP_PASSWORD=ftp_password
   ```
 
 ### - 7. Set Up the Database
