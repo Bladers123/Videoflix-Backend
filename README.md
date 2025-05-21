@@ -7,7 +7,20 @@
 
 ### - Python-Version runterladen und überprüfen
   Stelle sicher, dass Python 3.12.6 installiert ist:
-  pyenv install 3.12.6
+    ```bash
+    pyenv install 3.12.6
+    ``` 
+
+  Dann aktivierst du sie:
+   ```bash
+   pyenv global 3.12.6
+   ```
+
+  Und überprüfst:
+   ```bash
+    python --version
+    # Ausgabe: Python 3.12.6
+   ```
 
   **python --version**
 
