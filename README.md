@@ -38,7 +38,7 @@
  Aktiviere die virtuelle Umgebung:
  Für Windows PowerShell:
    ```bash
-   env/scripts/activate
+   env/Scripts/activate
    ```
 
 ### - Bei PowerShell-Fehlermeldung bzgl. Richtlinien:
@@ -67,17 +67,20 @@ Erstelle im Projektverzeichnis eine .env-Datei:
 
 ### - 7. Datenbank vorbereiten
   ```bash
+  cd videoflix_api
   python manage.py makemigrations
   python manage.py migrate
   ```
 
 ### - 8. Superuser erstellen
    ```bash
+  cd videoflix_api
    python manage.py createsuperuser
    ```
   
 ### - 9. Server starten
   ```bash
+  cd videoflix_api
   python manage.py runserver
   ```
   Der Server wird standardmäßig unter http://127.0.0.1:8000 laufen.
