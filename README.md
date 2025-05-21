@@ -1,15 +1,22 @@
 # Videoflix-Backend – Projekt-Setup & Konfiguration
-## Diese Anleitung beschreibt Schritt für Schritt, wie du das Projekt mit Python 3.12.6 lokal installierst, konfigurierst und entwickelst. Das Backend basiert auf Django und nutzt Django REST Framework, Redis Queue (RQ) für Hintergrundaufgaben sowie einen FTP-Server zur Speicherung von Videodateien.
 
-## Installation und Einrichtung
-  Lade dir VS-Code herunter und öffne über VS-Code das Projekt (Videoflix-Backend). Öffne das Terminal.
+## Diese Anleitung beschreibt Schritt für Schritt, wie du das Projekt mit Python 3.12.6 lokal installierst, konfigurierst und entwickelst. Das Backend basiert auf Django und nutzt Django REST Framework, Redis Queue (RQ) für Hintergrundaufgaben sowie einen FTP-Server zur Speicherung von Videodateien. Für den FTP-Server wird ein FTP-Client verwendet.
 
 
-### - Python-Version runterladen und überprüfen
+### - 1. Installation und Einrichtung
+  Lade dir VS-Code via google.de herunter und öffne VS-Code. Öffne das Terminal.
+
+### - 2. Repository klonen
+  ```bash
+  git clone https://github.com/Bladers123/Videoflix-Backend.git
+  cd videoflix-backend
+  ``` 
+  
+### - 3. Python-Version installieren und überprüfen
   Stelle sicher, dass Python 3.12.6 installiert ist:
-    ```bash
-    pyenv install 3.12.6
-    ``` 
+  ```bash
+  pyenv install 3.12.6
+  ``` 
 
   Dann aktivierst du sie:
    ```bash
@@ -22,102 +29,122 @@
     # Ausgabe: Python 3.12.6
    ```
 
-  **python --version**
-
-### - Virtuelle Umgebung erstellen
+### - 4. Virtuelle Umgebung erstellen und aktivieren
   Erstelle eine virtuelle Umgebung im Projektverzeichnis:
   ```bash
   python -m venv env
   ```
 
-### - Virtuelle Umgebung aktivieren
-   Aktiviere die virtuelle Umgebung:
-  
- # Für Windows PowerShell
+ Aktiviere die virtuelle Umgebung:
+ Für Windows PowerShell:
    ```bash
-   .\env\Scripts\activate
+   env/scripts/activate
    ```
 
- # Für Windows CMD
-   ```bash
-   env\Scripts\activate.bat
-   ```
-
-# Für Unix/Linux
-   ```bash
-   source env/bin/activate
-   ```
-
-### - Hinweis: Wenn ein Fehler bezüglich der Ausführungsrichtlinien auftritt, führe folgenden Befehl in PowerShell als Administrator aus:
+### - Bei PowerShell-Fehlermeldung bzgl. Richtlinien:
    ```bash
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
    ```
 
-### - Abhängigkeiten installieren
+### - 5. Abhängigkeiten installieren
   Installiere alle benötigten Pakete aus der requirements.txt:
   ```bash
   pip install -r requirements.txt
   ```
+
+
+### - 6. .env-Datei einrichten
+Erstelle im Projektverzeichnis eine .env-Datei:
+  ```bash
+  EMAIL_HOST_PASSWORD=dein_app_passwort
+  EMAIL_HOST_USER=deine_email@gmail.com
+  DEFAULT_FROM_EMAIL=deine_email@gmail.com
   
-
-### - Wenn du die Pakete manuell installieren möchtest, nutze folgende Befehle:
-
-# Installiert Django
-  ```bash
-  python -m pip install Django
+  FTP_SERVER=ftp.meinserver.com
+  FTP_USER=ftp_nutzer
+  FTP_PASSWORD=sicheres_passwort
   ```
 
-# Installiert Django REST Framework
-  ```bash
-  pip install djangorestframework
-  ```
-
- - und etlich weitere...
-
-### - Navigiere ins Projektverzeichnis:
-  ```bash
-  cd projektname
-  ```
-
-### - Datenbankmigrationen durchführen
-  - Erstelle Migrationsdateien basierend auf den Modellen in models.py:
+### - 7. Datenbank vorbereiten
   ```bash
   python manage.py makemigrations
-  ```
-
-  - Führe die Migrationen aus, um die Tabellen in der Datenbank zu erstellen:
-  ```bash
   python manage.py migrate
   ```
 
-
-### - Superuser erstellen
-  - Erstelle einen superuser:
-    ```bash
-    python manage.py createsuperuser
-    ```
-    
+### - 8. Superuser erstellen
+   ```bash
+   python manage.py createsuperuser
+   ```
   
-### - Server starten
-  Navigiere in das Projektverzeichnis und starte den Server:
+### - 9. Server starten
   ```bash
   python manage.py runserver
   ```
   Der Server wird standardmäßig unter http://127.0.0.1:8000 laufen.
 
-### - Bibliothek nur für Windows bzw. in der Entwicklung nutzbar rq-win==0.4.0 und backports.zoneinfo==0.2.1
 
-### - Config (.env)
-  Diese Datei im Projektverzeichnis erstellen (Name der Datei: .env) und die Daten für die Passwortanforderung und den Zugang zum FTP Server eingeben.
-  Hier ein Beispiel:
 
-  - EMAIL_HOST_PASSWORD=dsfdsf345435
-  - EMAIL_HOST_USER=gmail Adresse
-  - DEFAULT_FROM_EMAIL=gmail Adresse
 
-  - FTP_SERVER=max-mustermann-server
-  - FTP_USER=lkdsjflklkj5654
-  - FTP_PASSWORD=fsdkfjjl45645
+  
+
+## - Tests & Testabdeckung
+Das Projekt verwendet pytest und coverage für das Testen.
+
+### - Tests ausführen
+  ```bash
+  coverage run -m pytest
+  coverage report
+  ```
+
+### - Optional: HTML-Bericht erzeugen
+  ```bash
+  coverage html
+  start htmlcov/index.html
+  ```
+
+## - FTP-Integration
+Videodateien werden nicht lokal, sondern extern auf einem FTP-Server gespeichert. Die Zugangsdaten befinden sich in der .env. Achte darauf, dass der Server erreichbar ist und die entsprechenden Verzeichnisse existieren.
+Die Kommunikation erfolgt über Python’s ftplib oder ein abstrahiertes Interface im Projekt.
+
+## - Hintergrundaufgaben mit RQ
+Das Projekt nutzt django-rq für das Ausführen von Hintergrundjobs, z. B. Videokonvertierungen.
+
+### - Voraussetzungen
+- Redis muss lokal laufen (localhost:6379)
+- Falls noch nicht installiert:
+ ```bash
+ pip install django-rq redis
+ ```
+
+### - Worker starten (Windows-kompatibel)
+ ```bash
+ python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
+ ```
+
+## - Projektstruktur (Kurzüberblick)
+  ```bash
+  Videoflix Backend/
+  ├── env/
+  ├── videoflix_api/
+  │ ├── authentication_app/
+  │ ├── core/
+  │ │ └── ftp_client.py
+  │ ├── import_export_app/
+  │ ├── profile_app/
+  │ ├── static/
+  │ ├── video_app/
+  │ ├── videoflix_api/
+  │ │ ├── settings.py
+  │ │ ├── urls.py
+  │ ├── db.sqlite3
+  │ ├── manage.py
+  │ └── pytest.ini
+  ├── requirements.txt
+  └── README.md
+  └── ...
+   ```
+
+
 
 
 
