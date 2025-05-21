@@ -1,12 +1,14 @@
-# Projekt-Setup-Anleitung für Python 3.12.6
-## Diese Anleitung beschreibt die Schritte zur Installation und Konfiguration des Projekts mit Python 3.12.6.
+# Videoflix-Backend – Projekt-Setup & Konfiguration
+## Diese Anleitung beschreibt Schritt für Schritt, wie du das Projekt mit Python 3.12.6 lokal installierst, konfigurierst und entwickelst. Das Backend basiert auf Django und nutzt Django REST Framework, Redis Queue (RQ) für Hintergrundaufgaben sowie einen FTP-Server zur Speicherung von Videodateien.
 
 ## Installation und Einrichtung
   Lade dir VS-Code herunter und öffne über VS-Code das Projekt (Videoflix-Backend). Öffne das Terminal.
 
 
-### - Python-Version überprüfen
+### - Python-Version runterladen und überprüfen
   Stelle sicher, dass Python 3.12.6 installiert ist:
+  pyenv install 3.12.6
+
   **python --version**
 
 ### - Virtuelle Umgebung erstellen
@@ -103,4 +105,6 @@
   - FTP_SERVER=max-mustermann-server
   - FTP_USER=lkdsjflklkj5654
   - FTP_PASSWORD=fsdkfjjl45645
+
+
 
