@@ -53,6 +53,7 @@
 ### - 6. Configure Environment Variables
 Create a .env file in the project root folder:
   ```bash
+  ENVIRONMENT=development
   EMAIL_HOST_PASSWORD=your_app_password
   EMAIL_HOST_USER=your_email@gmail.com
   DEFAULT_FROM_EMAIL=your_email@gmail.com
@@ -102,6 +103,7 @@ The project uses pytest and coverage for unit testing and reporting.
   start htmlcov/index.html
   ```
 
+
 ## - FTP Integration
 Videos are stored externally on an FTP server instead of locally.
 The login credentials are stored in the .env file. Ensure the FTP server is accessible and that the target directories exist. The connection is handled via Python’s built-in ftplib and an abstracted interface in core/ftp_client.py.
@@ -109,17 +111,34 @@ The login credentials are stored in the .env file. Ensure the FTP server is acce
 ## - Background Tasks with RQ
 The project uses django-rq for asynchronous task processing, such as video conversion.
 
-### - Requirements
+## - Requirements
 - Redis must be running locally (localhost:6379)
 - If not installed:
  ```bash
  pip install django-rq redis
  ```
 
-### - Start the RQ Worker (Windows-compatible)
+## - Add Videos
+To upload a video and trigger background processing:
+
+### - 1. Start the Django development server if it's not already running:
+  ```bash
+  cd videoflix_api
+  python manage.py runserver
+  ```
+
+### - 2. Start the RQ Worker (Windows-compatible)
  ```bash
+ cd videoflix_api
  python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
  ```
+
+### - 3. Open your browser and go to the Django admin panel:
+http://127.0.0.1:8000/admin/video_app/video/add/
+
+### - 4. Log in with your admin credentials.
+
+### - 5. Fill in the video form and click Save. The background worker will automatically process the video (e.g. conversion, thumbnail generation, etc.).
 
 ## - Project Structure Overview
   ```bash
