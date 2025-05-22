@@ -92,9 +92,6 @@ MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'videoflix_api.wsgi.application'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -112,6 +109,7 @@ if ENVIRONMENT == 'production':
             'PORT': env('PORT', default='5432'),
         }
     }
+    DEBUG = False
 else:
     DATABASES = {
         'default': {
@@ -119,6 +117,7 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    DEBUG = True
 
 
 
