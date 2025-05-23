@@ -26,7 +26,6 @@
   Check version:
    ```bash
     python --version
-    # Ausgabe: Python 3.12.6
    ```
 
 ### 4. Create and Activate Virtual Environment
