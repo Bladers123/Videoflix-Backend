@@ -88,7 +88,7 @@ Create a .env file in the project root folder:
 
   
 
-## Testing & Coverage
+# Testing & Coverage
 The project uses pytest and coverage for unit testing and reporting.
 
 ### Run Tests
@@ -104,21 +104,21 @@ The project uses pytest and coverage for unit testing and reporting.
   ```
 
 
-## FTP Integration
+# FTP Integration
 Videos are stored externally on an FTP server instead of locally.
 The login credentials are stored in the .env file. Ensure the FTP server is accessible and that the target directories exist. The connection is handled via Python’s built-in ftplib and an abstracted interface in core/ftp_client.py.
 
-## Background Tasks with RQ
+# Background Tasks with RQ
 The project uses django-rq for asynchronous task processing, such as video conversion.
 
-## Requirements for RQ
+### Requirements for RQ
 - Redis must be running locally (localhost:6379)
 - If not installed:
  ```bash
  pip install django-rq redis
  ```
 
-## Add Videos
+# Add Videos
 To upload a video and trigger background processing:
 
 ### 1. Start the Django development server if it's not already running:
@@ -142,7 +142,7 @@ http://127.0.0.1:8000/admin/video_app/video/add/
 
 
 
-## Database Configuration
+# Database Configuration
 This project uses SQLite3 by default for local development. In a production environment, it is set up to use PostgreSQL. The database settings are controlled via the ENVIRONMENT variable defined in the .env file.
 
 ### .env Configuration for SQLite3:
@@ -192,7 +192,7 @@ else:
  ```
 
 
-## Project Structure Overview
+# Project Structure Overview
   ```bash
   Videoflix Backend/
   ├── env/
