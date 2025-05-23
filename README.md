@@ -154,7 +154,7 @@ This project uses SQLite3 by default for local development. In a production envi
 ### .env Configuration for PostgreSQL:
  ```bash
 # Production environment (uses PostgreSQL)
-# ENVIRONMENT=production
+ENVIRONMENT=production
 POSTGRES_DB=myproject_db
 POSTGRES_USER=myproject_user
 POSTGRES_PASSWORD=very_secure_password
