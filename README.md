@@ -50,7 +50,7 @@
   ```
 
 ### 6. Configure Environment Variables
-Create a .env file in the project root folder:
+This project uses a Google account. Create a .env file in the project root folder:
   ```bash
   ENVIRONMENT=development
   EMAIL_HOST_PASSWORD=your_app_password
