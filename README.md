@@ -29,7 +29,7 @@
     # Ausgabe: Python 3.12.6
    ```
 
-### - 4. Create and Activate Virtual Environment
+### 4. Create and Activate Virtual Environment
   Create a virtual environment inside the project folder:
   ```bash
   python -m venv env
