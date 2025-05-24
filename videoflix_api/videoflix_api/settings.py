@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_rq',
     'import_export',
     'import_export_app',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -175,12 +176,15 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
 ,
     ],
-    # Bei Komplikationen mal ausschalten
+    # Switch off in case of complications
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '1/second', 
-        'user': '10/second',
-    }
+        'anon': '10/second', 
+        'user': '100/second',
+    },
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
 
 CACHES = {
     'default': {
@@ -229,3 +233,11 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')    
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')  
 
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
