@@ -20,9 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 env.read_env(BASE_DIR / '.env')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -110,7 +107,7 @@ if ENVIRONMENT == 'production':
             'PORT': env('PORT', default='5432'),
         }
     }
-    DEBUG = False
+    DEBUG = True
     REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
 else:
     DATABASES = {
