@@ -15,7 +15,6 @@ urlpatterns = [
     path('verify/', UserVerifyAPIView.as_view(), name='user-verify'),
     path('user/', UserView.as_view(), name='user-view'),
     path('activate/<uidb64>/<token>/', ActivateUserAPIView.as_view(), name='user-activate'),
-
 ]
 
 urlpatterns += router.urls
