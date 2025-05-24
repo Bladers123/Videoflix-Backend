@@ -53,8 +53,9 @@
   ```
 
 ### 6. Configure Environment Variables
-This project uses a Google account. Create a .env file in the project root folder:
-  ```bash
+This project uses a Google account for email-related activities and FTP data for handling and storing videos.
+Create a .env file in the videoflix_api folder. If you're not sure where that is, refer to the Project Structure Overview at the bottom of this page.
+```bash
   ENVIRONMENT=development
   EMAIL_HOST_PASSWORD=your_app_password
   EMAIL_HOST_USER=your_email@gmail.com
