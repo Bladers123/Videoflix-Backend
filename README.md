@@ -208,6 +208,7 @@ else:
   │ │ ├── urls.py
   │ ├── db.sqlite3
   │ ├── manage.py
+  │ ├── .env
   │ └── pytest.ini
   ├── requirements.txt
   └── README.md
