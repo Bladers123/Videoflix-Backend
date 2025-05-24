@@ -235,8 +235,8 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Videoflix API',
+    'DESCRIPTION': 'This API powers Videoflix, a video streaming platform where users can register, manage profiles, and watch videos via secure HLS streaming. It includes endpoints for authentication, video management, and user preferences.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
