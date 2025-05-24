@@ -14,6 +14,12 @@
   
 ### 3. Install and Check Python Version
   Ensure that Python 3.12.6 is installed:
+  Check version:
+   ```bash
+    python --version
+   ```
+
+  Otherwise install:
   ```bash
   pyenv install 3.12.6
   ``` 
@@ -23,10 +29,7 @@
    pyenv global 3.12.6
    ```
 
-  Check version:
-   ```bash
-    python --version
-   ```
+ 
 
 ### 4. Create and Activate Virtual Environment
   Create a virtual environment inside the project folder:
