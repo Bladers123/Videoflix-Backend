@@ -8,7 +8,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.crypto import get_random_string
 
-
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.urls import reverse
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -81,30 +84,31 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('repeated_password')
         user = CustomUser.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', ''),
-            phone=validated_data.get('phone', ''),
-            address=validated_data.get('address', '')
+            username  = validated_data['username'],
+            email     = validated_data['email'],
+            password  = validated_data['password'],
+            is_active = False,
+            # … weitere Felder …
         )
 
-        subject = "Willkommen bei Videoflix!"
+        # UID & Token
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token  = default_token_generator.make_token(user)
+
+        # Basis-URL aus settings + Aktivierungspfad
+        # Achte darauf, ob REGISTRATION_EMAIL_URL schon mit Slash endet
+        base_url = settings.REGISTRATION_EMAIL_URL.rstrip('/')
+        activation_link = f"{base_url}/auth/activate/{uidb64}/{token}/"
+
+        subject = "Aktiviere Dein Videoflix-Konto"
         message = (
             f"Hallo {user.username},\n\n"
-            "Deine Registrierung war erfolgreich.\n\n"
-            "Viel Spaß mit Videoflix!\n\n"
+            "klicke bitte auf den folgenden Link, um Dein Konto zu aktivieren:\n\n"
+            f"{activation_link}\n\n"
             "Viele Grüße\n"
             "Dein Videoflix-Team"
         )
-
         from_email = settings.DEFAULT_FROM_EMAIL
-        
-        if not from_email:
-            raise serializers.ValidationError(
-                'DEFAULT_FROM_EMAIL ist nicht in den Settings definiert.'
-            )       
         send_mail(subject, message, from_email, [user.email])
 
         return user

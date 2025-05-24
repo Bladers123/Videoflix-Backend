@@ -111,6 +111,7 @@ if ENVIRONMENT == 'production':
         }
     }
     DEBUG = False
+    REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
 else:
     DATABASES = {
         'default': {
@@ -119,7 +120,7 @@ else:
         }
     }
     DEBUG = True
-
+    REGISTRATION_EMAIL_URL = env('LOCAL_REGISTRATION_EMAIL_URL')
 
 
 
