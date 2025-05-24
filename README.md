@@ -165,7 +165,7 @@ HOST=db
 PORT=5432
  ```
 
-Note: Never commit your .env file to version control, as it contains sensitive information such as database credentials!
+⚠️ Note: Never commit your .env file to version control, as it contains sensitive information such as database credentials!
 
 ### See the Configuration in settings.py:
 The settings.py file automatically switches between SQLite3 (for development) and PostgreSQL (for production):
@@ -219,6 +219,20 @@ else:
   └── ...
    ```
 
+
+# 📘 API Documentation
+
+- **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)  
+  Interactive interface to explore and test API endpoints.
+
+- **ReDoc UI**: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)  
+  Clean and readable API documentation powered by ReDoc.
+
+- **OpenAPI Schema (JSON)**: [http://localhost:8000/api/schema/](http://localhost:8000/api/schema/)  
+  Raw OpenAPI schema in JSON format – useful for code generation and validation tools.
+
+> ⚠️ These links only work in development mode on `localhost`.  
+> For production deployments, update the domain accordingly.
 
 
 
