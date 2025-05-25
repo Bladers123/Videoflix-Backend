@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-29tigw5aw=+9zct=jt&cd)zqe2z&yby#2sud(!lrqn#rm7ymq)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '195.201.118.62', 'videoflix-api.tristan-gehring.com']
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://videoflix-api.tristan-gehring.com',
+]
 
 # Application definition
 
