@@ -206,7 +206,7 @@ if ENVIRONMENT == 'production':
             'PORT': env('PORT', default='5432'),
         }
     }
-    DEBUG = True
+    DEBUG = False
     REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
     FORWARDING_URL = env('FRONTEND_FORWARDING_URL')
 else:
