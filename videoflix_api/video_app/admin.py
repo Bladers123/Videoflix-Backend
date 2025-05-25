@@ -12,6 +12,6 @@ class VideoResource(resources.ModelResource):
 
 class VideoAdmin(ImportExportModelAdmin):
     resource_class = VideoResource
-
+    exclude = ('file_size',)
 
 admin.site.register(Video, VideoAdmin)

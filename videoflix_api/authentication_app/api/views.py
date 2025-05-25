@@ -129,7 +129,6 @@ class UserVerifyAPIView(APIView):
 
 class ActivateUserAPIView(APIView):
     def get(self, request, uidb64, token, *args, **kwargs):
-        # decodieren & prüfen
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = CustomUser.objects.get(pk=uid)

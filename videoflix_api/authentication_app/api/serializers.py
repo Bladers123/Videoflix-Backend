@@ -88,15 +88,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email     = validated_data['email'],
             password  = validated_data['password'],
             is_active = False,
-            # … weitere Felder …
         )
 
-        # UID & Token
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         token  = default_token_generator.make_token(user)
 
-        # Basis-URL aus settings + Aktivierungspfad
-        # Achte darauf, ob REGISTRATION_EMAIL_URL schon mit Slash endet
         base_url = settings.REGISTRATION_EMAIL_URL.rstrip('/')
         activation_link = f"{base_url}/auth/activate/{uidb64}/{token}/"
 
@@ -112,9 +108,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         send_mail(subject, message, from_email, [user.email])
 
         return user
-
-
-
 
 
 class LoginSerializer(serializers.Serializer):
