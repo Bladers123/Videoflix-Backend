@@ -9,7 +9,7 @@
 ### 2. Clone the Repository
   ```bash
   git clone https://github.com/Bladers123/Videoflix-Backend.git
-  cd videoflix-backend
+  cd Videoflix-Backend
   ``` 
   
 ### 3. Install and Check Python Version
