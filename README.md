@@ -53,37 +53,40 @@
   ```
 
 ### 6. Configure Environment Variables
-Create a .env file in the videoflix_api folder. If you're not sure where that is, refer to the Project Structure Overview at the bottom of this page.
-Wenn du local arbeitest kannst du die zuweisungen für postgres einfach so lassen. Lokal wird die standart sqlite3 Datenbank verwendet. benötigt werden ftp server daten für die ablage von bild und video dateien und die daten von dem email deinem account.
-```bash
-# Set environment mode: 'development' or 'production'
-ENVIRONMENT=development
-
-# Email settings (required for registration/password reset)
-EMAIL_HOST_PASSWORD=your_email_password
-EMAIL_HOST_USER=your_email_address@gmail.com
-DEFAULT_FROM_EMAIL=your_email_address@gmail.com
-
-# FTP Server settings for media storage
-FTP_SERVER=ftp.example.com
-FTP_USER=ftp_user
-FTP_PASSWORD=ftp_password
-
-# Development mode URLs (used for registration email and frontend redirection)
-LOCAL_REGISTRATION_EMAIL_URL=http://127.0.0.1:8000/api/
-LOCAL_FORWARDING_URL=http://localhost:4200
-
-# Production mode URLs (used for registration email and frontend redirection.
-# Use your own URLs if ENVIRONMENT=production, otherwise leave as is)
-FRONTEND_REGISTRATION_EMAIL_URL=https://videoflix-api.tristan-gehring.com/api/
-FRONTEND_FORWARDING_URL=https://project.tristan-gehring.com/Videoflix
-
-# PostgreSQL database settings (used when ENVIRONMENT=production, otherwise leave as is it)
-POSTGRES_DB=myproject_db
-POSTGRES_USER=myproject_user
-POSTGRES_PASSWORD=very_secure_password
-HOST=db
-PORT=5432
+Create a .env file inside the videoflix_api folder.
+Paste the following content into the file, and update the FTP and email credentials accordingly.
+If you're unsure where this folder is located, refer to the Project Structure Overview at the bottom of this page.
+In development mode, the default SQLite3 database is used, so most PostgreSQL-related settings can be ignored.
+To run the project, you’ll need valid FTP server credentials (for storing images and videos) and an email account (e.g., Gmail) to enable features like registration and password reset.
+  ```bash
+  # Set environment mode: 'development' or 'production'
+  ENVIRONMENT=development
+  
+  # Email settings (required for registration/password reset)
+  EMAIL_HOST_PASSWORD=your_email_password
+  EMAIL_HOST_USER=your_email_address@gmail.com
+  DEFAULT_FROM_EMAIL=your_email_address@gmail.com
+  
+  # FTP Server settings for media storage
+  FTP_SERVER=ftp.example.com
+  FTP_USER=ftp_user
+  FTP_PASSWORD=ftp_password
+  
+  # Development mode URLs (used for registration email and frontend redirection)
+  LOCAL_REGISTRATION_EMAIL_URL=http://127.0.0.1:8000/api/
+  LOCAL_FORWARDING_URL=http://localhost:4200
+  
+  # Production mode URLs (used for registration email and frontend redirection.
+  # Use your own URLs if ENVIRONMENT=production, otherwise leave as is)
+  FRONTEND_REGISTRATION_EMAIL_URL=https://videoflix-api.tristan-gehring.com/api/
+  FRONTEND_FORWARDING_URL=https://project.tristan-gehring.com/Videoflix
+  
+  # PostgreSQL database settings (used when ENVIRONMENT=production, otherwise leave as is it)
+  POSTGRES_DB=myproject_db
+  POSTGRES_USER=myproject_user
+  POSTGRES_PASSWORD=very_secure_password
+  HOST=db
+  PORT=5432
   ```
 
 ### 7. Set Up the Database
