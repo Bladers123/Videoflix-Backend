@@ -221,6 +221,11 @@ else:
 
 
 # 📘 API Documentation
+Start the Django development server if it's not already running:
+```bash
+  cd videoflix_api
+  python manage.py runserver
+  ```
 
 - **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)  
   Interactive interface to explore and test API endpoints.
