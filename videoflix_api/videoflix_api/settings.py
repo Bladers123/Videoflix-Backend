@@ -109,6 +109,7 @@ if ENVIRONMENT == 'production':
     }
     DEBUG = True
     REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = env('FRONTEND_FORWARDING_URL')
 else:
     DATABASES = {
         'default': {
@@ -118,6 +119,7 @@ else:
     }
     DEBUG = True
     REGISTRATION_EMAIL_URL = env('LOCAL_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = env('LOCAL_FORWARDING_URL')
 
 
 

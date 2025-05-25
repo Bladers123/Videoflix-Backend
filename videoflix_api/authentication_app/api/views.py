@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import redirect
+from django.conf import settings
 
 
 class UserView(APIView):
@@ -127,22 +129,22 @@ class UserVerifyAPIView(APIView):
 
 class ActivateUserAPIView(APIView):
     def get(self, request, uidb64, token, *args, **kwargs):
+        # decodieren & prüfen
         try:
-            # UID decodieren und User holen
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = CustomUser.objects.get(pk=uid)
         except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
-            return Response({'detail': 'Ungültiger Aktivierungslink.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return redirect(
+                f"{settings.FORWARDING_URL}/#/activate/{uidb64}/{token}?success=false"
+            )
 
-        # Token prüfen
         if default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
-            return Response(
-                {'message': 'Dein Konto wurde erfolgreich aktiviert.'},
-                status=status.HTTP_200_OK
+            return redirect(
+                f"{settings.FORWARDING_URL}/#/activate/{uidb64}/{token}?success=true"
             )
         else:
-            return Response({'detail': 'Aktivierungslink ist abgelaufen oder ungültig.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return redirect(
+                f"{settings.FORWARDING_URL}/#/activate/{uidb64}/{token}?success=false"
+            )
