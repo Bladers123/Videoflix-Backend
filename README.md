@@ -1,6 +1,6 @@
 # Videoflix Backend – Project Setup & Configuration
 
-## This guide walks you through the step-by-step process of installing, configuring, and running the Videoflix backend locally with Python 3.12.6. The backend is built with Django and uses Django REST Framework, Redis Queue (RQ) for background tasks, and an FTP server for storing video files. A custom FTP client handles the server communication.
+## This guide walks you through the step-by-step process of installing, configuring, and running the Videoflix backend locally with Python >= 3.12.6. The backend is built with Django and uses Django REST Framework, Redis Queue (RQ) for background tasks, and an FTP server for storing video files. A custom FTP client handles the server communication.
 
 
 ### 1. Installation and Setup
@@ -13,7 +13,9 @@
   ``` 
   
 ### 3. Install and Check Python Version
-  Ensure that Python 3.12.6 is installed:
+  Ensure that Python is installed:
+  https://www.python.org/downloads/
+  Set 'Add Python to PATH'
   Check version:
    ```bash
     python --version
