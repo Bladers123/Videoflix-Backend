@@ -12,21 +12,24 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-import environ # type: ignore
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env()
-env.read_env(BASE_DIR / '.env')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-29tigw5aw=+9zct=jt&cd)zqe2z&yby#2sud(!lrqn#rm7ymq)'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '195.201.118.62', 'videoflix-api.tristan-gehring.com']
+# Allowed Hosts
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+
 
 CSRF_TRUSTED_ORIGINS = [
     'https://videoflix-api.tristan-gehring.com',
@@ -96,22 +99,22 @@ WSGI_APPLICATION = 'videoflix_api.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-ENVIRONMENT = env('ENVIRONMENT', default='development')
+ENVIRONMENT = os.getenv('ENVIRONMENT', default='development')
 
 if ENVIRONMENT == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('POSTGRES_DB'),
-            'USER': env('POSTGRES_USER'),
-            'PASSWORD': env('POSTGRES_PASSWORD'),
-            'HOST': env('HOST'),
-            'PORT': env('PORT', default='5432'),
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('HOST'),
+            'PORT': os.getenv('PORT', default='5432'),
         }
     }
     DEBUG = True
-    REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = env('FRONTEND_FORWARDING_URL')
+    REGISTRATION_EMAIL_URL = os.getenv('FRONTEND_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('FRONTEND_FORWARDING_URL')
 else:
     DATABASES = {
         'default': {
@@ -120,8 +123,8 @@ else:
         }
     }
     DEBUG = True
-    REGISTRATION_EMAIL_URL = env('LOCAL_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = env('LOCAL_FORWARDING_URL')
+    REGISTRATION_EMAIL_URL = os.getenv('LOCAL_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('LOCAL_FORWARDING_URL')
 
 
 
@@ -221,23 +224,23 @@ AUTH_USER_MODEL = 'authentication_app.CustomUser'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # FTP Server
-FTP_SERVER = env('FTP_SERVER')
-FTP_USER = env('FTP_USER')
-FTP_PASSWORD = env('FTP_PASSWORD')
+FTP_SERVER = os.getenv('FTP_SERVER')
+FTP_USER = os.getenv('FTP_USER')
+FTP_PASSWORD = os.getenv('FTP_PASSWORD')
 
 
 # Email (For Password Recovery)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')    
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')    
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')  
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')    
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')    
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')  
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Videoflix API',
+    'TITLE': 'Videoflix API Dokumentation',
     'DESCRIPTION': 'This API powers Videoflix, a video streaming platform where users can register, manage profiles, and watch videos via secure HLS streaming. It includes endpoints for authentication, video management, and user preferences.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
