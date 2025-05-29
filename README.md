@@ -56,7 +56,8 @@ To run the project, you’ll need valid FTP server credentials (for storing imag
   EMAIL_HOST_PASSWORD=your_email_password
   EMAIL_HOST_USER=your_email_address@gmail.com
   DEFAULT_FROM_EMAIL=your_email_address@gmail.com
-  
+  EMAIL_HOST=your_host
+
   # FTP Server settings for media storage
   FTP_SERVER=ftp.example.com
   FTP_USER=ftp_user
