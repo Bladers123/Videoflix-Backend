@@ -19,19 +19,7 @@
   Check version:
    ```bash
     python --version
-   ```
-
-  Otherwise install:
-  ```bash
-  pyenv install 3.12.6
-  ``` 
-
-  Then you activate it:
-   ```bash
-   pyenv global 3.12.6
-   ```
-
- 
+   ``` 
 
 ### 4. Create and Activate Virtual Environment
   Create a virtual environment inside the project folder:
