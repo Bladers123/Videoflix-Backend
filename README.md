@@ -77,6 +77,12 @@ To run the project, you’ll need valid FTP server credentials (for storing imag
   POSTGRES_PASSWORD=very_secure_password
   HOST=db
   PORT=5432
+
+  # Used by Django to sign and verify security-critical data
+  SECRET_KEY='secretkey324232kktesting'
+
+  # Comma-separated list of hostnames/IPs that Django will allow (security check)
+  ALLOWED_HOSTS=localhost,127.0.0.1
   ```
 
 ### 7. Set Up the Database
