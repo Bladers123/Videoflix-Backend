@@ -14,8 +14,8 @@
   
 ### 3. Install and Check Python Version
   Ensure that Python is installed:
-  https://www.python.org/downloads/
-  Set 'Add Python to PATH'
+  https://www.python.org/downloads/  
+  Set 'Add Python to PATH'  
   Check version:
    ```bash
     python --version
