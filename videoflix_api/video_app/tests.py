@@ -22,7 +22,7 @@ from video_app.api.tasks import (
     convert_to_1080p,
     upload_hls_files,
     generate_master_playlist,
-    generate_and_upload_master_playlist,
+    upload_master_playlist,
     upload_thumbnail,
 )
 
@@ -191,7 +191,7 @@ def test_video_post_save_enqueues(mock_get_queue, mock_filter, tmp_path):
         video.video_type
     )
     queue.enqueue.assert_any_call(
-        generate_and_upload_master_playlist,
+        upload_master_playlist,
         os.path.dirname(str(file_path)),
         os.path.splitext(os.path.basename(str(file_path)))[0],
         os.path.splitext(os.path.basename(str(file_path)))[0],
@@ -268,7 +268,7 @@ def test_generate_and_upload_master_playlist(mock_client, tmp_path):
     conn.cwd.return_value = None
     conn.mkd.side_effect = ftplib.error_perm("exists")
 
-    generate_and_upload_master_playlist(str(tmp_path), "folder", "basename", "clip")
+    upload_master_playlist(str(tmp_path), "folder", "basename", "clip")
 
     client.upload_file.assert_called_with(str(tmp_path / "gen-master.m3u8"), "master.m3u8")
 

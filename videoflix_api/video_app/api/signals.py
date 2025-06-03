@@ -3,48 +3,49 @@ import os
 from django.dispatch import receiver
 from video_app.models import Video
 from django.db.models.signals import post_save, post_delete
-import django_rq # type: ignore
-from .tasks import  convert_to_1080p, convert_to_120p, convert_to_360p, convert_to_720p, generate_and_upload_master_playlist, upload_hls_files, upload_thumbnail
+import django_rq  # type: ignore
+from .tasks import convert_to_1080p, convert_to_120p, convert_to_360p, convert_to_720p, delete_local_media_folder, upload_master_playlist, upload_hls_files, upload_thumbnail
 
 
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
-    print('Video wurde gespeichert.')
-    if created:
-        print('Neues Video wurde erstellt.')
-        queue = django_rq.get_queue('default', autocommit=True)
-        
-        directory, filename = os.path.split(instance.video_file.path)
-        name, ext = os.path.splitext(filename)
-        video_type = instance.video_type
+    if not created:
+        return
 
-        queue.enqueue(convert_to_120p, instance.video_file.path)
-        queue.enqueue(convert_to_360p, instance.video_file.path)
-        queue.enqueue(convert_to_720p, instance.video_file.path)
-        queue.enqueue(convert_to_1080p, instance.video_file.path)
-        queue.enqueue(upload_hls_files, directory, name, video_type)
-        queue.enqueue(generate_and_upload_master_playlist, directory, name, name, video_type)
-        print('Videos sind fertig hochgeladen.')
+    queue = django_rq.get_queue('default', autocommit=True)
+    directory, filename = os.path.split(instance.video_file.path)
+    name, ext = os.path.splitext(filename)
+    video_type = instance.video_type
 
-        if instance.thumbnail:
-            directory, thumb_filename = os.path.split(instance.thumbnail.path)
-            name, ext = os.path.splitext(thumb_filename)
-            video_folder = name 
-            queue.enqueue(
-                upload_thumbnail,
-                instance.thumbnail.path,
-                video_folder,
-                instance.video_type,
-                thumb_filename 
-            )
-            print(f"Thumbnail-Upload für {thumb_filename} enqueued.")
+    job120 = queue.enqueue(convert_to_120p, instance.video_file.path)
+    job360 = queue.enqueue(convert_to_360p, instance.video_file.path)
+    job720 = queue.enqueue(convert_to_720p, instance.video_file.path)
+    job1080 = queue.enqueue(convert_to_1080p, instance.video_file.path)
 
-        if instance.video_file:
-            Video.objects.filter(pk=instance.pk).update(
-                file_size=instance.video_file.size
-            )
-            print(f"Dateigröße ({instance.video_file.size} Bytes) in DB gespeichert.")
+    job_hls = queue.enqueue(upload_hls_files, directory, name, video_type, depends_on=[job120, job360, job720, job1080])
+
+    job_master = queue.enqueue(upload_master_playlist, directory, name, name, video_type, depends_on=job_hls)
+
+    if instance.thumbnail:
+        thumb_dir, thumb_filename = os.path.split(instance.thumbnail.path)
+        thumb_name, thumb_ext = os.path.splitext(thumb_filename)
+        video_folder = thumb_name
+
+        job_thumb = queue.enqueue(
+            upload_thumbnail,
+            instance.thumbnail.path,
+            video_folder,
+            instance.video_type,
+            thumb_filename,
+            depends_on=job_master
+        )
+        queue.enqueue(delete_local_media_folder, depends_on=job_thumb)
+    else:
+        queue.enqueue(delete_local_media_folder, depends_on=job_master)
+
+    if instance.video_file:
+        Video.objects.filter(pk=instance.pk).update(file_size=instance.video_file.size)
 
 
 @receiver(post_delete, sender=Video)
