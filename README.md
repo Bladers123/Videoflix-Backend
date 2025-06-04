@@ -329,20 +329,20 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
     ```
 
 3. **Test RQ-Windows worker installation:**
-   1. **Start shell:**
+   - **Start shell:**
       ```powershell
       python
       ```
-   2. **Füge dann folgendes ein:**
+   - **Füge dann folgendes ein:**
       ```python
       import rq_win.worker
       print(rq_win.worker.WindowsWorker)
       ```
-   3. **Expected output:** You should see something like:
+   - **Expected output:** You should see something like:
       ```python
       <class 'rq_win.worker.WindowsWorker'>
       ``` 
-   4. **Exit the shell:**
+   - **Exit the shell:**
       ```python
       exit()
       ``` 
