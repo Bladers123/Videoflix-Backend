@@ -297,7 +297,7 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
       ```
     - Click OK to save all dialogs.
 
-7. To test, open a new terminal and run:
+7. To test, open a new powershell terminal and run:
     ```bash
     ffmpeg -version
     ```
