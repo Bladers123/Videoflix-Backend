@@ -107,130 +107,6 @@ To run the project, you’ll need valid FTP server credentials (for storing imag
   The server will be available at: http://127.0.0.1:8000
 
 
-
-
-  
-
-# Testing & Coverage
-The project uses pytest and coverage for unit testing and reporting.
-
-### Run Tests
-  ```bash
-  coverage run -m pytest
-  coverage report
-  ```
-
-### Optional: Generate HTML Report
-  ```bash
-  coverage html
-  start htmlcov/index.html
-  ```
-
-
-# FTP Integration
-Videos are stored externally on an FTP server instead of locally.
-The login credentials are stored in the .env file. Ensure the FTP server is accessible and that the target directories exist. The connection is handled via Python’s built-in ftplib and an abstracted interface in core/ftp_client.py.
-
-
-# Database Configuration
-This project uses SQLite3 by default for local development. In a production environment, it is set up to use PostgreSQL. The database settings are controlled via the ENVIRONMENT variable defined in the .env file.
-
-### .env Configuration for SQLite3:
- ```bash
- # Development environment (uses SQLite3)
- ENVIRONMENT=development
- ```
-
-### .env Configuration for PostgreSQL:
- ```bash
-# Production environment (uses PostgreSQL)
-ENVIRONMENT=production
-POSTGRES_DB=myproject_db
-POSTGRES_USER=myproject_user
-POSTGRES_PASSWORD=very_secure_password
-HOST=db
-PORT=5432
- ```
-
-⚠️ Note: Never commit your .env file to version control, as it contains sensitive information such as database credentials!
-
-### See the Configuration in settings.py:
-The settings.py file automatically switches between SQLite3 (for development) and PostgreSQL (for production):
- ```bash
-ENVIRONMENT = os.getenv('ENVIRONMENT', default='development')
-
-if ENVIRONMENT == 'production':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv('HOST'),
-            'PORT': os.getenv('PORT', default='5432'),
-        }
-    }
-    DEBUG = True
-    REGISTRATION_EMAIL_URL = os.getenv('FRONTEND_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = os.getenv('FRONTEND_FORWARDING_URL')
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-    DEBUG = True
-    REGISTRATION_EMAIL_URL = os.getenv('LOCAL_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = os.getenv('LOCAL_FORWARDING_URL')
- ```
-
-
-# Project Structure Overview
-  ```bash
-  Videoflix Backend/
-  ├── env/
-  ├── videoflix_api/
-  │ ├── authentication_app/
-  │ ├── core/
-  │ │ └── ftp_client.py
-  │ ├── import_export_app/
-  │ ├── profile_app/
-  │ ├── static/
-  │ ├── video_app/
-  │ ├── videoflix_api/
-  │ │ ├── settings.py
-  │ │ ├── urls.py
-  │ ├── db.sqlite3
-  │ ├── manage.py
-  │ ├── .env
-  │ └── pytest.ini
-  ├── requirements.txt
-  └── README.md
-  └── ...
-   ```
-
-
-# 📘 API Documentation
-Start the Django development server if it's not already running:
-```bash
-  cd videoflix_api
-  python manage.py runserver
-  ```
-
-- **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)  
-  Interactive interface to explore and test API endpoints.
-
-- **ReDoc UI**: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)  
-  Clean and readable API documentation powered by ReDoc.
-
-- **OpenAPI Schema (JSON)**: [http://localhost:8000/api/schema/](http://localhost:8000/api/schema/)  
-  Raw OpenAPI schema in JSON format – useful for code generation and validation tools.
-
-> ⚠️ These links only work in development mode on `localhost`.  
-> For production deployments, update the domain accordingly.
-
-
 # Background Tasks with RQ (Windows Setup Guide)
 
 This project uses [django-rq](https://github.com/rq/django-rq) and Redis for asynchronous background task processing (e.g. video conversion).  
@@ -333,7 +209,7 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
       ```powershell
       python
       ```
-   - **Füge dann folgendes ein:**
+   - **Then paste the following:**
       ```python
       import rq_win.worker
       print(rq_win.worker.WindowsWorker)
@@ -398,6 +274,122 @@ The first time you run the worker after emptying the queue or cleaning up jobs, 
 **This is normal on Windows! Just start the worker again – it should now run without issues.**
 
 
+# FTP Integration
+Videos are stored externally on an FTP server instead of locally.
+The login credentials are stored in the .env file. Ensure the FTP server is accessible and that the target directories exist. The connection is handled via Python’s built-in ftplib and an abstracted interface in core/ftp_client.py.
+
+
+# Database Configuration
+This project uses SQLite3 by default for local development. In a production environment, it is set up to use PostgreSQL. The database settings are controlled via the ENVIRONMENT variable defined in the .env file.
+
+### .env Configuration for SQLite3:
+ ```bash
+ # Development environment (uses SQLite3)
+ ENVIRONMENT=development
+ ```
+
+### .env Configuration for PostgreSQL:
+ ```bash
+# Production environment (uses PostgreSQL)
+ENVIRONMENT=production
+POSTGRES_DB=myproject_db
+POSTGRES_USER=myproject_user
+POSTGRES_PASSWORD=very_secure_password
+HOST=db
+PORT=5432
+ ```
+
+⚠️ Note: Never commit your .env file to version control, as it contains sensitive information such as database credentials!
+
+### See the Configuration in settings.py:
+The settings.py file automatically switches between SQLite3 (for development) and PostgreSQL (for production):
+ ```bash
+ENVIRONMENT = os.getenv('ENVIRONMENT', default='development')
+
+if ENVIRONMENT == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('HOST'),
+            'PORT': os.getenv('PORT', default='5432'),
+        }
+    }
+    DEBUG = True
+    REGISTRATION_EMAIL_URL = os.getenv('FRONTEND_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('FRONTEND_FORWARDING_URL')
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    DEBUG = True
+    REGISTRATION_EMAIL_URL = os.getenv('LOCAL_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('LOCAL_FORWARDING_URL')
+ ```
+
+# Testing & Coverage
+The project uses pytest and coverage for unit testing and reporting.
+
+### Run Tests
+  ```bash
+  coverage run -m pytest
+  coverage report
+  ```
+
+### Optional: Generate HTML Report
+  ```bash
+  coverage html
+  start htmlcov/index.html
+  ```
+
+# Project Structure Overview
+  ```bash
+  Videoflix Backend/
+  ├── env/
+  ├── videoflix_api/
+  │ ├── authentication_app/
+  │ ├── core/
+  │ │ └── ftp_client.py
+  │ ├── import_export_app/
+  │ ├── profile_app/
+  │ ├── static/
+  │ ├── video_app/
+  │ ├── videoflix_api/
+  │ │ ├── settings.py
+  │ │ ├── urls.py
+  │ ├── db.sqlite3
+  │ ├── manage.py
+  │ ├── .env
+  │ └── pytest.ini
+  ├── requirements.txt
+  └── README.md
+  └── ...
+   ```
+
+
+# 📘 API Documentation
+Start the Django development server if it's not already running:
+```bash
+  cd videoflix_api
+  python manage.py runserver
+  ```
+
+- **Swagger UI**: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)  
+  Interactive interface to explore and test API endpoints.
+
+- **ReDoc UI**: [http://localhost:8000/api/redoc/](http://localhost:8000/api/redoc/)  
+  Clean and readable API documentation powered by ReDoc.
+
+- **OpenAPI Schema (JSON)**: [http://localhost:8000/api/schema/](http://localhost:8000/api/schema/)  
+  Raw OpenAPI schema in JSON format – useful for code generation and validation tools.
+
+> ⚠️ These links only work in development mode on `localhost`.  
+> For production deployments, update the domain accordingly.
 
 
 
