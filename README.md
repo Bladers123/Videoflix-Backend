@@ -348,20 +348,31 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
 
 ---
 
-## 3. RQ and django-rq Installation
+## 3. RQ and django-rq Installation (VS Code)
 
-1. **Install the required Python packages**:
+1. **Open the terminal in VS Code and start your venv:
+    ```bash
+    python -m venv env
+    cd videoflix_api
+    ```
+
+2. **Install the required Python packages (these should already be installed if you used requirements.txt)**:
     ```bash
     pip install django-rq redis rq==1.15.0 rq-win
     ```
 
-2. **Test RQ-Windows worker installation**:
-    ```python
+3. **Test RQ-Windows worker installation**:
+   1. Start shell:
+      ```python
+      python
+      ```python
     python
     import rq_win.worker
     print(rq_win.worker.WindowsWorker)
     exit()
     ```
+
+5. ****
 
 ---
 
