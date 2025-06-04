@@ -131,39 +131,6 @@ The project uses pytest and coverage for unit testing and reporting.
 Videos are stored externally on an FTP server instead of locally.
 The login credentials are stored in the .env file. Ensure the FTP server is accessible and that the target directories exist. The connection is handled via Python’s built-in ftplib and an abstracted interface in core/ftp_client.py.
 
-# Background Tasks with RQ
-The project uses django-rq for asynchronous task processing, such as video conversion.
-
-### Requirements for RQ
-- Redis must be running locally (localhost:6379)
-- If not installed:
- ```bash
- pip install django-rq redis
- ```
-
-# Add Videos
-To upload a video and trigger background processing:
-
-### 1. Start the Django development server if it's not already running:
-  ```bash
-  cd videoflix_api
-  python manage.py runserver
-  ```
-
-### 2. Start the RQ Worker (Windows-compatible):
- ```bash
- cd videoflix_api
- python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
- ```
-
-### 3. Open your browser and go to the Django admin panel:
-http://127.0.0.1:8000/admin/video_app/video/add/
-
-### 4. Log in with your admin credentials.
-
-### 5. Fill in the video form and click Save. The background worker will automatically process the video (e.g. conversion, thumbnail generation, etc.).
-
-
 
 # Database Configuration
 This project uses SQLite3 by default for local development. In a production environment, it is set up to use PostgreSQL. The database settings are controlled via the ENVIRONMENT variable defined in the .env file.
@@ -350,42 +317,87 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
 
 ## 3. RQ and django-rq Installation (VS Code)
 
-1. **Open the terminal in VS Code and start your venv:
+1. **Open the terminal in VS Code and start your venv:**
     ```bash
     python -m venv env
     cd videoflix_api
     ```
 
-2. **Install the required Python packages (these should already be installed if you used requirements.txt)**:
+2. **Install the required Python packages (these should already be installed if you used requirements.txt):**
     ```bash
     pip install django-rq redis rq==1.15.0 rq-win
     ```
 
-3. **Test RQ-Windows worker installation**:
-   1. Start shell:
-      ```python
+3. **Test RQ-Windows worker installation:**
+   1. **Start shell:**
+      ```powershell
       python
+      ```
+   2. **Füge dann folgendes ein:**
       ```python
-    python
-    import rq_win.worker
-    print(rq_win.worker.WindowsWorker)
-    exit()
-    ```
-
-5. ****
+      import rq_win.worker
+      print(rq_win.worker.WindowsWorker)
+      ```
+   3. **Expected output:** You should see something like:
+      ```python
+      <class 'rq_win.worker.WindowsWorker'>
+      ``` 
+   4. **Exit the shell:**
+      ```python
+      exit()
+      ``` 
 
 ---
 
-## 4. Starting Everything
+## 4. Running the Application (Start all services)
 
-### 1. Start Django server
+**Follow these steps to start your application and background workers:**
 
-```bash
-cd videoflix_api
-python manage.py runserver
+1. **Start the Django development server**
+    ```bash
+    cd videoflix_api
+    python manage.py runserver
+    ```
+
+2. **Start the RQ Worker (in a new terminal window)**
+    **Open a second terminal (so the server keeps running!) and run:**
+    ```bash
+    cd videoflix_api
+    python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
+    ```
+
+    **Expected output:**  
+    You should see something like:
+    ```bash
+    Using rq_win.WindowsWorker (experimental)
+    Worker rq:worker:... started with PID ...
+    *** Listening on default...
+    ```
+    **If you see errors (e.g., about “job registry leftovers”), stop and start the worker again. After the first run, it should start cleanly.**
+
+    **Optional: Clear the job queue before starting the worker (for troubleshooting):**
+    ```bash
+    python -m rq.cli empty default
+    ```
+
+3. **Upload a Video and Trigger Background Processing**
+   1. **Open your browser and go to:**
+      http://127.0.0.1:8000/admin/video_app/video/add/
+  
+   2. **Log in with your admin credentials.**
+  
+   3. **Upload a video and save the form.**
+      The background worker will automatically process the video (e.g., conversion, thumbnail generation).
+
+---
+
+### **Note on Windows Worker Errors**
+
+The first time you run the worker after emptying the queue or cleaning up jobs, you might see an error about a missing job (`'NoneType' object has no attribute 'id'`).
+
+**This is normal on Windows! Just start the worker again – it should now run without issues.**
 
 
-cd videoflix_api
-python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
+
 
 
