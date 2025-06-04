@@ -105,7 +105,7 @@ To run the project, you’ll need valid FTP server credentials (for storing imag
   python manage.py runserver
   ```
   The server will be available at: http://127.0.0.1:8000
-
+---
 
 # Background Tasks with RQ (Windows Setup Guide)
 
@@ -257,14 +257,14 @@ Below you'll find instructions for setting up all dependencies on **Windows**.
     ```
 
 3. **Upload a Video and Trigger Background Processing**
-   1. **Open your browser and go to:**
+   - **Open your browser and go to:**
       http://127.0.0.1:8000/admin/video_app/video/add/
   
-   2. **Log in with your admin credentials.**
+   - **Log in with your admin credentials.**
   
-   3. **Upload a video and save the form.**
+   - **Upload a video and save the form.**
       The background worker will automatically process the video (e.g., conversion, thumbnail generation).
-
+     
 ---
 
 ### **Note on Windows Worker Errors**
