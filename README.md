@@ -190,22 +190,22 @@ PORT=5432
 ### See the Configuration in settings.py:
 The settings.py file automatically switches between SQLite3 (for development) and PostgreSQL (for production):
  ```bash
-ENVIRONMENT = env('ENVIRONMENT', default='development')
+ENVIRONMENT = os.getenv('ENVIRONMENT', default='development')
 
 if ENVIRONMENT == 'production':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('POSTGRES_DB'),
-            'USER': env('POSTGRES_USER'),
-            'PASSWORD': env('POSTGRES_PASSWORD'),
-            'HOST': env('HOST'),
-            'PORT': env('PORT', default='5432'),
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('HOST'),
+            'PORT': os.getenv('PORT', default='5432'),
         }
     }
-    DEBUG = False
-    REGISTRATION_EMAIL_URL = env('FRONTEND_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = env('FRONTEND_FORWARDING_URL')
+    DEBUG = True
+    REGISTRATION_EMAIL_URL = os.getenv('FRONTEND_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('FRONTEND_FORWARDING_URL')
 else:
     DATABASES = {
         'default': {
@@ -214,8 +214,8 @@ else:
         }
     }
     DEBUG = True
-    REGISTRATION_EMAIL_URL = env('LOCAL_REGISTRATION_EMAIL_URL')
-    FORWARDING_URL = env('LOCAL_FORWARDING_URL')
+    REGISTRATION_EMAIL_URL = os.getenv('LOCAL_REGISTRATION_EMAIL_URL')
+    FORWARDING_URL = os.getenv('LOCAL_FORWARDING_URL')
  ```
 
 
@@ -264,5 +264,117 @@ Start the Django development server if it's not already running:
 > For production deployments, update the domain accordingly.
 
 
+# Background Tasks with RQ (Windows Setup Guide)
+
+This project uses [django-rq](https://github.com/rq/django-rq) and Redis for asynchronous background task processing (e.g. video conversion).  
+Below you'll find instructions for setting up all dependencies on **Windows**.
+
+---
+
+## 1. FFmpeg Setup (Windows)
+
+1. Download the latest static build for Windows here:  
+   [https://github.com/BtbN/FFmpeg-Builds/releases](https://github.com/BtbN/FFmpeg-Builds/releases)
+
+2. Download the file:  
+   `ffmpeg-master-latest-win64-gpl.zip`
+
+3. Extract the archive.
+
+4. Create a new folder:  
+   `C:\Program Files\ffmpeg`
+
+5. Copy **all extracted files and folders** (`bin`, `doc`, `LICENSE.txt`, etc.) into this folder.
+
+6. Add FFmpeg to your system PATH:  
+    - Open the Windows start menu and search for "Environment Variables".
+    - Click **Edit the system environment variables**.
+    - In the System Properties window, click **Environment Variables**.
+    - Under "System variables", select `Path` and click **Edit**.
+    - Click **New** and add:  
+      ```
+      C:\Program Files\ffmpeg\bin
+      ```
+    - Click OK to save all dialogs.
+
+7. To test, open a new terminal and run:
+    ```bash
+    ffmpeg -version
+    ```
+    You should see version info printed.
+
+---
+
+## 2. Redis Setup (Windows)
+
+1. **Install Chocolatey** (if not installed):
+
+    Open PowerShell as **Administrator** and run:
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; `
+      [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+      iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    ```
+
+2. **Install Redis (Memurai)**:
+    ```powershell
+    choco install redis-64 -y
+    ```
+
+3. **Check Redis service (Memurai) status**:
+    ```powershell
+    Get-Service *memurai*
+    ```
+
+    You should see something like:
+    ```
+    Status   Name      DisplayName
+    ------   ----      -----------
+    Running  Memurai   Memurai
+    ```
+
+4. **Start the service (if not running)**:
+    ```powershell
+    Start-Service -Name Memurai
+    # or
+    net start Memurai
+    ```
+
+5. **Test Redis CLI:**
+    ```bash
+    redis-cli ping
+    # Should return: PONG
+    ```
+
+---
+
+## 3. RQ and django-rq Installation
+
+1. **Install the required Python packages**:
+    ```bash
+    pip install django-rq redis rq==1.15.0 rq-win
+    ```
+
+2. **Test RQ-Windows worker installation**:
+    ```python
+    python
+    import rq_win.worker
+    print(rq_win.worker.WindowsWorker)
+    exit()
+    ```
+
+---
+
+## 4. Starting Everything
+
+### 1. Start Django server
+
+```bash
+cd videoflix_api
+python manage.py runserver
+
+
+cd videoflix_api
+python manage.py rqworker --worker-class=rq_win.worker.WindowsWorker
 
 
