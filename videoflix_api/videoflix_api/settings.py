@@ -116,7 +116,7 @@ if ENVIRONMENT == 'production':
             'PORT': os.getenv('PORT', default='5432'),
         }
     }
-    DEBUG = True
+    DEBUG = False
     REGISTRATION_EMAIL_URL = os.getenv('FRONTEND_REGISTRATION_EMAIL_URL')
     FORWARDING_URL = os.getenv('FRONTEND_FORWARDING_URL')
 else:
